@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Ghouls & Ghosts Remix
+Comment=Hit and run game
+Exec=ggr_056.sh
+Terminal=true
+Type=Application
+StartupNotify=true
+Icon=data/icon
+Categories=games;
