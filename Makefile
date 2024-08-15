@@ -22,7 +22,8 @@ INC=-I$(TARGET)/usr/$(TARGET)/sysroot/usr/include
 #LDFLAGS += $(INC) -lSDL2 -lSDL2_ttf -lSDL2_mixer $(shell $(SDL_CONFIG) --libs)
 #CFLAGS +=-D_GCW_ -O2 $(LIB) $(shell $(SDL_CONFIG) --cflags) -Wall -Wextra
 LDFLAGS += $(INC) $(shell $(ALLEGRO_CONFIG) --libs)
-CFLAGS += -O2 $(LIB) -std=gnu++98 -Dlinux -mips32 -Wno-write-strings -Wall -Wextra
+CFLAGS += -O2 $(LIB) -std=gnu++98 -Dlinux -mips32 -Wno-write-strings
+# -Wall -Wextra
 
 SRCS=$(shell echo *.cpp)
 OBJS=$(SRCS:%.cpp=%.o)

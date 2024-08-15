@@ -20,7 +20,7 @@ class giant : public _sprite
    void shootBullet();
  	
   public:
-   giant(char *,int,int,BITMAP *,int i=0,giant *p=NULL);
+   giant(char *,int,int,BITMAP **,int i=0,giant *p=NULL);
    ~giant();
    void setMaxX(int);
    void setMinX(int);
@@ -50,7 +50,7 @@ class giant : public _sprite
    void debug();
  };
 
-giant::giant(char *filename, int sx, int sy, BITMAP *bmp, int i, giant *p) : _sprite(filename,bmp,sx,sy,i,p)
+giant::giant(char *filename, int sx, int sy, BITMAP **bmp, int i, giant *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   min_x=0; max_x=0;
   // Bullet (assegno i frame ai proiettili prendendoli dalla memoria già allocata)
@@ -169,8 +169,8 @@ void giant::drawSprite(int sx,int sy)
   if(inScreen())
    {
    	if(act_frame==3) play_sample(sound[2],120,150,1000,0);
-    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
-    else     draw_sprite       (screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
+    else     draw_sprite       (*screen,frames[act_frame],X,Y);
    }
   // Bullet
   for(int i=0;i<N_BU;i++)
@@ -254,13 +254,13 @@ void giant::resetObj(bool enb)
 
 void giant::debug()
  {
-  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

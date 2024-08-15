@@ -14,15 +14,15 @@ class water
  	 SAMPLE *sound[4];
  	 //BITMAP *frame[100];
  	 //BITMAP *frame_col[100];
- 	 BITMAP *out,*water_bmp,*aux_bmp;
+ 	 BITMAP **out,*water_bmp,*aux_bmp;
  	 map *plat_map;
  	 map *hight_map;
  	 map *back_map;
 
- 	 void setOutBitmap(BITMAP *);
+ 	 void setOutBitmap(BITMAP **);
  	
  	public:
- 	 water(int,int,BITMAP *,int i=0,water *p=NULL);
+ 	 water(int,int,BITMAP **,int i=0,water *p=NULL);
  	 ~water();
  	 void drawSFX(int,int);
  	 void timeSFX();
@@ -53,7 +53,7 @@ class water
  	 void debug();
  };
 
-water::water(int sx, int sy, BITMAP *out, int i, water *p)
+water::water(int sx, int sy, BITMAP **out, int i, water *p)
  {
  	_i=i;
  	start_x=sx; start_y=sy;
@@ -87,7 +87,7 @@ void water::loadSample(char *filename, int n)
  	sound[n]=load_sample(filename);
  }
 
-void water::setOutBitmap(BITMAP *bmp) { out=bmp; }
+void water::setOutBitmap(BITMAP **bmp) { out=bmp; }
 
 void water::timeSFX()
  {
@@ -120,11 +120,11 @@ void water::drawSFX(int sx,int sy)
   	  if(ti[1]->isOn()) lev+=levdx;
   	 }
   	else lev=1;
-  	drawing_mode(DRAW_MODE_TRANS,out,0,0);
+  	drawing_mode(DRAW_MODE_TRANS,*out,0,0);
   	set_trans_blender(0,0,0,alpha);
-  	for(int i=0;i<wlen;i++) draw_trans_sprite(out,water_bmp,(X+i*192)-128,Y+lev);
+  	for(int i=0;i<wlen;i++) draw_trans_sprite(*out,water_bmp,(X+i*192)-128,Y+lev);
   	set_trans_blender(0,0,0,255);
-  	drawing_mode(DRAW_MODE_SOLID,out,0,0);
+  	drawing_mode(DRAW_MODE_SOLID,*out,0,0);
    }
  }
 
@@ -202,13 +202,13 @@ void water::resetSFX(bool act)
 
 void water::debug()
  {
- 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

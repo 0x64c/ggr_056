@@ -13,7 +13,7 @@ class map
    int speed_x,speed_y;
    bool main_scroll,hscroll_on,vscroll_on;
    BITMAP *tile[32*32];
-   BITMAP *out;
+   BITMAP **out;
    mobile **mobilep;
    int data[300][300];
    int platform[300][300];
@@ -23,10 +23,10 @@ class map
    int walldata[50][2];
    int n_plat;
 
-   void setOutBitmap(BITMAP *);
+   void setOutBitmap(BITMAP **);
 
   public:
-   map(char *,char *,BITMAP *,bool mainscroll=false,char *plat_filename="",char *dat_plat_filename="",char *stairs_filename="",char *wall_filename="",char *dat_wall_filename="",bool loadall=false);
+   map(char *,char *,BITMAP **,bool mainscroll=false,char *plat_filename="",char *dat_plat_filename="",char *stairs_filename="",char *wall_filename="",char *dat_wall_filename="",bool loadall=false);
    ~map();
    void drawMap();
    void scrollMap();
@@ -66,7 +66,7 @@ class map
    void debug();
  };
 
-map::map(char *bmp_filename,char *map_filename, BITMAP *out,bool mainscroll,char *plat_filename,char *dat_plat_filename,char *stairs_filename,char *wall_filename,char *dat_wall_filename,bool loadall)
+map::map(char *bmp_filename,char *map_filename, BITMAP **out,bool mainscroll,char *plat_filename,char *dat_plat_filename,char *stairs_filename,char *wall_filename,char *dat_wall_filename,bool loadall)
  {
   main_scroll=mainscroll;
   loadMap(bmp_filename,map_filename);
@@ -80,6 +80,7 @@ map::map(char *bmp_filename,char *map_filename, BITMAP *out,bool mainscroll,char
   scroll_stop_x=0; scroll_stop_y=0;
   hscroll_on=1; vscroll_on=1;
   scroll_x=0; scroll_y=0;
+  tilepos_x=0; tilepos_y=0;
  }
 
 map::~map()
@@ -212,20 +213,20 @@ void map::loadWall(char *wall_filename,char *dat_wall_filename)
  	fclose(fd);
  }
 
-void map::setOutBitmap(BITMAP *bmp) { out=bmp; }
+void map::setOutBitmap(BITMAP **bmp) { out=bmp; }
 
 void map::drawMap()
  {
- 	for(int x=0;x<=num_col;x++)
- 	 for(int y=0;y<=num_row;y++)
+ 	for(int x=0;x<num_col;x++)
+ 	 for(int y=0;y<num_row;y++)
  	  {
- 	   //blit(getTile(y+tilepos_y,x),out,0,0,x*tdim_x,(max_ty-1-y)*tdim_y+scroll_dy,scr_x,scr_y);
- 	   //draw_sprite(out,tile[data[x+tilepos_x][num_row-1-y]],x*tile_w-scroll_dx,(num_row-1-y)*tile_h);
+ 	   //blit(getTile(y+tilepos_y,x),*out,0,0,x*tdim_x,(max_ty-1-y)*tdim_y+scroll_dy,scr_x,scr_y);
+ 	   //draw_sprite(*out,tile[data[x+tilepos_x][num_row-1-y]],x*tile_w-scroll_dx,(num_row-1-y)*tile_h);
  	   
- 	   draw_sprite(out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
+ 	   draw_sprite(*out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
  	   
- 	   //textprintf_ex(out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x][y]);
- 	   //textprintf_ex(out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x+tilepos_x][num_row-1-y]);
+ 	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x][y]);
+ 	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x+tilepos_x][num_row-1-y]);
  	  }
  	//scrollMap();
  }
@@ -373,7 +374,7 @@ int map::getActWall(bool side, int x, int y)
   posx=walldata[wy][0];
   alte=walldata[wy][1];
   if(wy<0) return 0;
-  //textprintf_ex(out,font,0,242,makecol32(255,0,0),-1,">(Wx:%d Posx:%d) y:%d <= Alte:%d V:%d",wx,posx,tile_h-getTileOffsetY(),alte,wy);
+  //textprintf_ex(*out,font,0,242,makecol32(255,0,0),-1,">(Wx:%d Posx:%d) y:%d <= Alte:%d V:%d",wx,posx,tile_h-getTileOffsetY(),alte,wy);
   if(alte<=32) // Muro verso l'alto
    {
 	if(wx==posx+2 &&  side) if(tile_h-y%tile_h<=alte) return 1; // <-
@@ -451,7 +452,7 @@ int map::getActPlatformEnemies(int p_x,int p_y,int type,bool side)
     sy=stairs[x/tile_w][y/tile_h];
     //sy=stairs[getActTileX()][getActTileY()];
 
- 	 	textprintf_ex(out,font,0,230,makecol32(255,0,0),-1,"S: %d  ymod(32):%d",sy,y%32);
+ 	 	textprintf_ex(*out,font,0,230,makecol32(255,0,0),-1,"S: %d  ymod(32):%d",sy,y%32);
 
  	 	if(sy>=0  && sy<=31) { if(y%tile_h<=sy%tile_h) return 1; } // Basso
  	 	if(sy>=32 && sy<=63) { return 1; }                         // In mezzo
@@ -507,7 +508,7 @@ void map::debug()
   // Tile
   for(int x=0;x<=num_col;x++)
    for(int y=0;y<=num_row;y++)
-    putpixel(out,x*tile_w-scroll_dx,y*tile_h-scroll_dy+32,makecol32(255,255,255));
+    putpixel(*out,x*tile_w-scroll_dx,y*tile_h-scroll_dy+32,makecol32(255,255,255));
 
   // Platform
   for(int x=0;x<=num_col;x++)
@@ -521,7 +522,7 @@ void map::debug()
        for(int i=0;i<=32;i++)
         {
          val=platformdata[v][i];
-         putpixel(out,x*tile_w-scroll_dx+i,y*tile_h-scroll_dy-val+32,makecol32(255,255,0));
+         putpixel(*out,x*tile_w-scroll_dx+i,y*tile_h-scroll_dy-val+32,makecol32(255,255,0));
         }
       }
     } 	  
@@ -538,8 +539,8 @@ void map::debug()
 	   if(v>=32) v=31;
        for(int i=0;i<=v;i++)
         {
-         putpixel(out,x*tile_w-scroll_dx+15,y*tile_h-scroll_dy+i+32,makecol32(0,255,255));
-         putpixel(out,x*tile_w-scroll_dx+17,y*tile_h-scroll_dy+i+32,makecol32(0,255,255));
+         putpixel(*out,x*tile_w-scroll_dx+15,y*tile_h-scroll_dy+i+32,makecol32(0,255,255));
+         putpixel(*out,x*tile_w-scroll_dx+17,y*tile_h-scroll_dy+i+32,makecol32(0,255,255));
         }
       }
      if(v>=64) // Scala alta (da 64 a 96)
@@ -547,8 +548,8 @@ void map::debug()
 	   v=96-v;
        for(int i=1;i<=v;i++)
         {
-         putpixel(out,x*tile_w-scroll_dx+15,y*tile_h-scroll_dy-i+64,makecol32(0,255,0));
-         putpixel(out,x*tile_w-scroll_dx+17,y*tile_h-scroll_dy-i+64,makecol32(0,255,0));
+         putpixel(*out,x*tile_w-scroll_dx+15,y*tile_h-scroll_dy-i+64,makecol32(0,255,0));
+         putpixel(*out,x*tile_w-scroll_dx+17,y*tile_h-scroll_dy-i+64,makecol32(0,255,0));
 		}
       }
     } 
@@ -565,17 +566,17 @@ void map::debug()
        posx=walldata[v][0]; alte=walldata[v][1];
        if(alte<=32) 
         {
-         line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+63,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+64-alte,makecol32(255,0,0));
+         line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+63,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+64-alte,makecol32(255,0,0));
          if(posx==0)
-          line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx+3,y*tile_h-scroll_dy+48,makecol32(255,0,0));
+          line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx+3,y*tile_h-scroll_dy+48,makecol32(255,0,0));
          if(posx==32)
-          line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx-3,y*tile_h-scroll_dy+48,makecol32(255,0,0));
+          line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx-3,y*tile_h-scroll_dy+48,makecol32(255,0,0));
         }
        if(alte>32)
         {
-         line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+32,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+alte,makecol32(255,0,255));         
-         if(posx==0)  line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx+3,y*tile_h-scroll_dy+48,makecol32(255,0,255));
-         if(posx==32) line(out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx-3,y*tile_h-scroll_dy+48,makecol32(255,0,255));
+         line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+32,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+alte,makecol32(255,0,255));         
+         if(posx==0)  line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx+3,y*tile_h-scroll_dy+48,makecol32(255,0,255));
+         if(posx==32) line(*out,x*tile_w-scroll_dx+posx,y*tile_h-scroll_dy+48,x*tile_w-scroll_dx+posx-3,y*tile_h-scroll_dy+48,makecol32(255,0,255));
         }
       }
     }

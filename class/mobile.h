@@ -16,7 +16,7 @@ class mobile
    timer *ti[5];
    BITMAP *frame[100];
    BITMAP *frame_col[100];
-   BITMAP *out;
+   BITMAP **out;
    int mobiledata[100][6+48]; // 0 dis. muro da sinistra
                               // 1 dist. muro da destra
                               // 2 altezza muro sin.
@@ -27,10 +27,10 @@ class mobile
    void loadSpriteFrames(char *);
    void loadMobile(char *dat_mobile_filename);
    void assignSpriteFrame(mobile *);
-   void setOutBitmap(BITMAP *);
+   void setOutBitmap(BITMAP **);
 
   public:
-   mobile(char *,char *,int,int,int,int,int,BITMAP *,int i=0,mobile *p=NULL);
+   mobile(char *,char *,int,int,int,int,int,BITMAP **,int i=0,mobile *p=NULL);
    ~mobile();
    void setStartX(int);
    void setStartY(int);
@@ -76,7 +76,7 @@ class mobile
    void debug();
  };
 
-mobile::mobile(char *filename, char *dat_filename, int sx, int sy, int fra, int end_f, int typ, BITMAP *out, int i, mobile *p)
+mobile::mobile(char *filename, char *dat_filename, int sx, int sy, int fra, int end_f, int typ, BITMAP **out, int i, mobile *p)
  {
  	_i=i;
  	if(!_i) loadSpriteFrames(filename); else assignSpriteFrame(p);
@@ -157,7 +157,7 @@ void mobile::assignSpriteFrame(mobile *p)
    }
  }
 
-void mobile::setOutBitmap(BITMAP *bmp) { out=bmp; }
+void mobile::setOutBitmap(BITMAP **bmp) { out=bmp; }
 
 void mobile::timeSprite()
  {
@@ -208,7 +208,7 @@ void mobile::drawSprite(int sx,int sy)
   if(type==3 || type==4) { pos_y+=dy; if(pos_y<min_y) dy=1; if(pos_y>max_y) dy=-1; } // Moving (up/down)
   if(inScreen())
    {
-    draw_sprite(out,frame[act_frame],X,Y);
+    draw_sprite(*out,frame[act_frame],X,Y);
    }
  }
 
@@ -341,11 +341,11 @@ void mobile::resetObj(bool act)
 
 void mobile::debug()
  {
-  if(act_frame==55) draw_sprite(out,frame[act_frame],X,Y);
+  if(act_frame==55) draw_sprite(*out,frame[act_frame],X,Y);
   if(active)
    {
-    line(out,X,Y+54-1-mobiledata[act_frame][6],X+48,Y+54-1-mobiledata[act_frame][6],makecol(255,255,0)); 
-    line(out,X+mobiledata[act_frame][0],Y+54,X+mobiledata[act_frame][0],Y+54-2-mobiledata[act_frame][2],makecol(255,0,0));
-    line(out,X+48-mobiledata[act_frame][1],Y+54,X+48-mobiledata[act_frame][1],Y+54-2-mobiledata[act_frame][3],makecol(255,0,0));
+    line(*out,X,Y+54-1-mobiledata[act_frame][6],X+48,Y+54-1-mobiledata[act_frame][6],makecol(255,255,0)); 
+    line(*out,X+mobiledata[act_frame][0],Y+54,X+mobiledata[act_frame][0],Y+54-2-mobiledata[act_frame][2],makecol(255,0,0));
+    line(*out,X+48-mobiledata[act_frame][1],Y+54,X+48-mobiledata[act_frame][1],Y+54-2-mobiledata[act_frame][3],makecol(255,0,0));
    }
  }

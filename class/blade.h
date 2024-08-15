@@ -14,7 +14,7 @@ class blade : public _sprite
    map *back_map;
 
   public:
-   blade(char *,int,int,int,int,BITMAP *,int fr=0,int i=0,blade *p=NULL);
+   blade(char *,int,int,int,int,BITMAP **,int fr=0,int i=0,blade *p=NULL);
    ~blade();
    void drawSprite(int,int);
    void timeSprite();
@@ -36,7 +36,7 @@ class blade : public _sprite
    void debug();
  };
 
-blade::blade(char *filename, int sx, int sy, int my, int co, BITMAP *bmp, int fr, int i, blade *p) : _sprite(filename,bmp,sx,sy,i,p)
+blade::blade(char *filename, int sx, int sy, int my, int co, BITMAP **bmp, int fr, int i, blade *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   maxy=my; afr=fr; coun=co;
   resetObj(true);
@@ -97,8 +97,8 @@ void blade::drawSprite(int sx,int sy)
   X=-sx+pos_x-23; Y=-sy+pos_y-12;
   if(inScreen())
    {
-    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
-    else     draw_sprite       (screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
+    else     draw_sprite       (*screen,frames[act_frame],X,Y);
    }
  }
 
@@ -154,13 +154,13 @@ void blade::resetObj(bool enb)
 
 void blade::debug()
  {
-  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

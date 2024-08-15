@@ -13,17 +13,17 @@ class fire
    SAMPLE *sound[4];
    //BITMAP *frame[100];
    //BITMAP *frame_col[100];
-   BITMAP *out,*fire_bmp;
+   BITMAP **out,*fire_bmp;
    int PAL[255];
    unsigned char fire_map[220][80];
    map *plat_map;
    map *hight_map;
    map *back_map;
 
-   void setOutBitmap(BITMAP *);
+   void setOutBitmap(BITMAP **);
  	
   public:
-   fire(int,int,BITMAP *,int i=0,fire *p=NULL);
+   fire(int,int,BITMAP **,int i=0,fire *p=NULL);
    ~fire();
    void drawSFX(int,int);
    void timeSFX();
@@ -52,7 +52,7 @@ class fire
    void debug();
  };
 
-fire::fire(int sx, int sy, BITMAP *out, int i, fire *p)
+fire::fire(int sx, int sy, BITMAP **out, int i, fire *p)
  {
   _i=i;
  	start_x=sx; start_y=sy;
@@ -84,7 +84,7 @@ void fire::loadSample(char *filename, int n)
  	sound[n]=load_sample(filename);
  }
 
-void fire::setOutBitmap(BITMAP *bmp) { out=bmp; }
+void fire::setOutBitmap(BITMAP **bmp) { out=bmp; }
 
 void fire::timeSFX()
  {
@@ -128,17 +128,17 @@ void fire::drawSFX(int sx,int sy)
        }
      }
    }
-  masked_blit(fire_bmp,out,2,0,X+637,Y+12,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+422,Y+6,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+212,Y+5,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X,Y,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+1000,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+1215,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+1430,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+1645,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+1860,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+2075,Y+180,fire_bmp->w-4,fire_bmp->h);
-  masked_blit(fire_bmp,out,2,0,X+2200,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+637,Y+12,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+422,Y+6,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+212,Y+5,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X,Y,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+1000,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+1215,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+1430,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+1645,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+1860,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+2075,Y+180,fire_bmp->w-4,fire_bmp->h);
+  masked_blit(fire_bmp,*out,2,0,X+2200,Y+180,fire_bmp->w-4,fire_bmp->h);
  }
 
 void fire::platformSFX()
@@ -214,13 +214,13 @@ void fire::resetSFX(bool act)
 
 void fire::debug()
  {
- 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

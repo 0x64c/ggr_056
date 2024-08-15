@@ -22,7 +22,7 @@ class big_crab : public _sprite
    void shootBullet();
  	
   public:
-   big_crab(char *,int,int,BITMAP *,int i=0,big_crab *p=NULL);
+   big_crab(char *,int,int,BITMAP **,int i=0,big_crab *p=NULL);
    ~big_crab();
    void drawSprite(int,int);
    void timeSprite();
@@ -54,7 +54,7 @@ class big_crab : public _sprite
    void debug();
  };
 
-big_crab::big_crab(char *filename, int sx, int sy, BITMAP *bmp, int i, big_crab *p) : _sprite(filename,bmp,sx,sy,i,p)
+big_crab::big_crab(char *filename, int sx, int sy, BITMAP **bmp, int i, big_crab *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   // Bullet (assegno i frame ai proiettili prendendoli dalla memoria già allocata)
   // Per adesso nessun "sound" è assegnato ai proiettili
@@ -231,8 +231,8 @@ void big_crab::drawSprite(int sx,int sy)
   if(act_frame>=1 && act_frame<=5) is_hard=true;  else is_hard=false;
  	if(inScreen())
  	 {
-    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
-    else     draw_sprite       (screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
+    else     draw_sprite       (*screen,frames[act_frame],X,Y);
    }
 
  	// Bullet
@@ -328,13 +328,13 @@ void big_crab::resetObj(bool enb)
 
 void big_crab::debug()
  {
-  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }
