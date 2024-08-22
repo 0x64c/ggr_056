@@ -1,0 +1,34 @@
+EXE=ggr
+RM=/usr/bin/rm -rf
+MKDIR=/usr/bin/mkdir -p
+CP=/usr/bin/cp
+
+CC=gcc
+CXX=g++
+STRIP=strip
+
+ALLEGRO_CONFIG=/usr/bin/allegro-config
+SDL_CONFIG=/usr/bin/sdl2-config
+
+LIB=-L/usr/lib
+INC=-I/usr/include
+
+LDFLAGS += $(INC) -lSDL2 -lSDL2_ttf -lSDL2_mixer $(shell $(SDL_CONFIG) --libs) $(shell $(ALLEGRO_CONFIG) --libs)
+CFLAGS += -ggdb3 $(LIB) $(shell $(SDL_CONFIG) --cflags) -std=gnu++98 -Dlinux -Wno-write-strings
+# -Wall -Wextra
+
+SRCS=$(shell echo *.cpp)
+OBJS=$(SRCS:%.cpp=%.o)
+
+ALL : $(EXE)
+.cpp.o:
+	$(CXX) $(CFLAGS) $(CXXFLAGS) -c $*.cpp -o $*.o
+
+$(EXE) : $(OBJS)
+	$(CXX) $(OBJS) -o $(EXE) $(LDFLAGS)
+#	$(STRIP) $(EXE)
+
+clean :
+	$(RM) $(OBJS) $(EXE) $(OPK)
+
+.PHONY:opk clean install uninstall ALL
