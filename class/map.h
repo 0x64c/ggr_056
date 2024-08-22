@@ -217,13 +217,13 @@ void map::setOutBitmap(BITMAP **bmp) { out=bmp; }
 
 void map::drawMap()
  {
- 	for(int x=0;x<num_col;x++)
- 	 for(int y=0;y<num_row;y++)
+ 	for(int x=0;x<=num_col;x++)
+ 	 for(int y=0;y<=num_row;y++)
  	  {
  	   //blit(getTile(y+tilepos_y,x),*out,0,0,x*tdim_x,(max_ty-1-y)*tdim_y+scroll_dy,scr_x,scr_y);
  	   //draw_sprite(*out,tile[data[x+tilepos_x][num_row-1-y]],x*tile_w-scroll_dx,(num_row-1-y)*tile_h);
- 	   
- 	   draw_sprite(*out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
+       if((x+tilepos_x)<tilemax_x&&(y+tilepos_y)<tilemax_y)//check if array in bounds before accessing
+ 	     draw_sprite(*out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
  	   
  	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x][y]);
  	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x+tilepos_x][num_row-1-y]);
@@ -354,7 +354,7 @@ int map::getActPlatformMobile(int x,int y)
 
   //mobile[0]->getActFrameColP();  
   if(y/tile_h<0) return max_bound_y;
-  for(int i=0;i<n_plat;i++) // Per tutte le piattaforme mobili (le più in alto devono avere indice basso)
+  for(int i=0;i<n_plat;i++) // Per tutte le piattaforme mobili (le piï¿½ in alto devono avere indice basso)
    if(mobilep[i]->isActive())
     if(x+23>=*mobilep[i]->getPosXP()-1 && x+23<=*mobilep[i]->getPosXP()+48-1) // c'e una piattaforma mobile sotto (o sopra) il giocatore
      {
@@ -519,7 +519,7 @@ void map::debug()
  	 v=platform[x+tilepos_x][y+tilepos_y];
      if(v!=-1 && v!=-2)
       {
-       for(int i=0;i<=32;i++)
+       for(int i=0;i<32;i++)
         {
          val=platformdata[v][i];
          putpixel(*out,x*tile_w-scroll_dx+i,y*tile_h-scroll_dy-val+32,makecol32(255,255,0));
@@ -534,7 +534,7 @@ void map::debug()
      int v,val;
 
  	 v = stairs[x+tilepos_x][y+tilepos_y];
-	 if(v>=0 && v<64) // Scala di mezzo/bassa (da 0 a 31, >= a 32 è come se fosse 31)
+	 if(v>=0 && v<64) // Scala di mezzo/bassa (da 0 a 31, >= a 32 ï¿½ come se fosse 31)
 	  {
 	   if(v>=32) v=31;
        for(int i=0;i<=v;i++)
