@@ -17,7 +17,7 @@ class insect : public _sprite
    map *back_map;
  	
   public:
-   insect(char *,int,int,BITMAP **,int i=0,insect *p=NULL);
+   insect(char *,int,int,BITMAP *,int i=0,insect *p=NULL);
    ~insect();
    void drawSprite(int,int);
    void timeSprite();
@@ -44,7 +44,7 @@ class insect : public _sprite
    void debug();
  };
 
-insect::insect(char *filename, int sx, int sy, BITMAP **bmp, int i, insect *p) : _sprite(filename,bmp,sx,sy,i,p)
+insect::insect(char *filename, int sx, int sy, BITMAP *bmp, int i, insect *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   dd=-1; type=0;
   resetObj(true);
@@ -144,8 +144,8 @@ void insect::drawSprite(int sx,int sy)
   if(act_frame<4) hittable=true; else hittable=false;
   if(inScreen())
    {
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
+    else     draw_sprite       (screen,frames[act_frame],X,Y);
    }
  }
 
@@ -209,13 +209,13 @@ void insect::resetObj(bool enb)
 
 void insect::debug()
  {
-  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

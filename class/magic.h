@@ -18,7 +18,7 @@ class magic
    SAMPLE *sound[4];
    BITMAP *frame[_COL*_ROW];
    BITMAP *frame_col[2][_COL*_ROW];
-   BITMAP **out;
+   BITMAP *out;
    int X[NUM_SPRITE],Y[NUM_SPRITE],POSX[NUM_SPRITE],POSY[NUM_SPRITE],STATO[NUM_SPRITE];
    int ACT_FRAME[NUM_SPRITE],MIN_FRAME[NUM_SPRITE],MAX_FRAME[NUM_SPRITE];
    map *plat_map;
@@ -27,10 +27,10 @@ class magic
 
    void loadSpriteFrames(char *);
    void assignSpriteFrame(magic *p);
-   void setOutBitmap(BITMAP **);
+   void setOutBitmap(BITMAP *);
  	
   public:
-   magic(char *,BITMAP **,int i=0,magic *p=NULL);
+   magic(char *,BITMAP *,int i=0,magic *p=NULL);
    ~magic();
    void drawSprite(int,int);
    void timeSprite();
@@ -68,7 +68,7 @@ class magic
    void debug();
  };
 
-magic::magic(char *filename, BITMAP **out, int i, magic *p)
+magic::magic(char *filename, BITMAP *out, int i, magic *p)
  {
   actWeapon=LANCE; frame_offset=0; power=0; max_power=1; tick=70;
   _i=i;
@@ -150,7 +150,7 @@ void magic::assignSample(int n,magic *p)
   sound[n]=p->sound[n];
  }
 
-void magic::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void magic::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void magic::timeSprite()
  {
@@ -248,8 +248,8 @@ void magic::drawSprite(int sx, int sy)
        	if(STATO[i]!=OFF && STATO[i]!=LOAD)
        	 {
    	      if(animated && ti[1]->isOn()) { ACT_FRAME[i]++; if(ACT_FRAME[i]>MAX_FRAME[i]) ACT_FRAME[i]=MIN_FRAME[i]; }
-          if(side) draw_sprite_h_flip(*out,frame[ACT_FRAME[i]],X[i],Y[i]);
-          else     draw_sprite       (*out,frame[ACT_FRAME[i]],X[i],Y[i]);
+          if(side) draw_sprite_h_flip(out,frame[ACT_FRAME[i]],X[i],Y[i]);
+          else     draw_sprite       (out,frame[ACT_FRAME[i]],X[i],Y[i]);
          }
        }
      }
@@ -260,8 +260,8 @@ void magic::drawSprite(int sx, int sy)
        	if(STATO[i]!=OFF)
        	 {
    	      if(animated && ti[1]->isOn()) { ACT_FRAME[i]++; if(ACT_FRAME[i]>MAX_FRAME[i]) ACT_FRAME[i]=MIN_FRAME[i]; }
-          if(side) draw_sprite_h_flip(*out,frame[ACT_FRAME[i]],X[i],Y[i]);
-          else     draw_sprite       (*out,frame[ACT_FRAME[i]],X[i],Y[i]);
+          if(side) draw_sprite_h_flip(out,frame[ACT_FRAME[i]],X[i],Y[i]);
+          else     draw_sprite       (out,frame[ACT_FRAME[i]],X[i],Y[i]);
          }
        }
      }
@@ -276,14 +276,14 @@ void magic::drawSprite(int sx, int sy)
            if(side)
             {
              if(STATO[i]!=DIAG_UP || Y[i]<*player_y)
-           	  if(i%2==0) draw_sprite_h_flip(*out,frame[ACT_FRAME[i]],X[i],Y[i]);
-           	  else       draw_sprite       (*out,frame[ACT_FRAME[i]],X[i],Y[i]);
+           	  if(i%2==0) draw_sprite_h_flip(out,frame[ACT_FRAME[i]],X[i],Y[i]);
+           	  else       draw_sprite       (out,frame[ACT_FRAME[i]],X[i],Y[i]);
             }
            else
             {
              if(STATO[i]!=DIAG_UP || Y[i]<*player_y)
-           	  if(i%2==0) draw_sprite       (*out,frame[ACT_FRAME[i]],X[i],Y[i]);
-           	  else       draw_sprite_h_flip(*out,frame[ACT_FRAME[i]],X[i],Y[i]);
+           	  if(i%2==0) draw_sprite       (out,frame[ACT_FRAME[i]],X[i],Y[i]);
+           	  else       draw_sprite_h_flip(out,frame[ACT_FRAME[i]],X[i],Y[i]);
             }
          }
        }
@@ -291,13 +291,13 @@ void magic::drawSprite(int sx, int sy)
    }
   if(hard)
    {
-    if(side) draw_sprite_h_flip(*out,frame[hard_frame],-sx+hithard_x,-sy+hithard_y);
-    else     draw_sprite       (*out,frame[hard_frame],-sx+hithard_x,-sy+hithard_y);
+    if(side) draw_sprite_h_flip(out,frame[hard_frame],-sx+hithard_x,-sy+hithard_y);
+    else     draw_sprite       (out,frame[hard_frame],-sx+hithard_x,-sy+hithard_y);
    }
   if(soft)
    {
-    if(side) draw_sprite_h_flip(*out,frame[soft_frame],-sx+hitsoft_x,-sy+hitsoft_y);
-    else     draw_sprite       (*out,frame[soft_frame],-sx+hitsoft_x,-sy+hitsoft_y);
+    if(side) draw_sprite_h_flip(out,frame[soft_frame],-sx+hitsoft_x,-sy+hitsoft_y);
+    else     draw_sprite       (out,frame[soft_frame],-sx+hitsoft_x,-sy+hitsoft_y);
    }
  }
 
@@ -500,13 +500,13 @@ bool magic::isTwo() { return two; }
 
 void magic::debug()
  {
- 	/*putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));*/
+ 	/*putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));*/
  }

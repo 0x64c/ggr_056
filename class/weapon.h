@@ -18,17 +18,17 @@ class weapon
  	 SAMPLE *sound[4];
  	 BITMAP *frame[_COL*_ROW];
  	 BITMAP *frame_col[2][_COL*_ROW];
- 	 BITMAP **out;
+ 	 BITMAP *out;
  	 map *plat_map;
  	 map *hight_map;
  	 map *back_map;
 
  	 void loadSpriteFrames(char *);
  	 void assignSpriteFrame(weapon *p);
- 	 void setOutBitmap(BITMAP **);
+ 	 void setOutBitmap(BITMAP *);
  	
  	public:
- 	 weapon(char *,BITMAP **,int i=0,weapon *p=NULL);
+ 	 weapon(char *,BITMAP *,int i=0,weapon *p=NULL);
  	 ~weapon();
  	 void drawSprite(int,int);
  	 void timeSprite();
@@ -66,7 +66,7 @@ class weapon
  	 void debug();
  };
 
-weapon::weapon(char *filename, BITMAP **out, int i, weapon *p)
+weapon::weapon(char *filename, BITMAP *out, int i, weapon *p)
  {
  	actWeapon=LANCE; frame_offset=0; power=0; max_power=1;
  	_i=i;
@@ -148,7 +148,7 @@ void weapon::assignSample(int n,weapon *p)
  	sound[n]=p->sound[n];
  }
 
-void weapon::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void weapon::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void weapon::timeSprite()
  {
@@ -276,26 +276,26 @@ void weapon::drawSprite(int sx, int sy)
    	 {
    	  if(act_frame%2==0 && powerup)
    	   {
-   	    if(side) draw_sprite(*out,frame_col[1][act_frame-1],X,Y);
-   	    else     draw_sprite(*out,frame_col[0][act_frame-1],X,Y);
+   	    if(side) draw_sprite(out,frame_col[1][act_frame-1],X,Y);
+   	    else     draw_sprite(out,frame_col[0][act_frame-1],X,Y);
    	   }
    	 }
 
-    if(side) draw_sprite_h_flip(*out,frame[act_frame],X,Y);
-    else     draw_sprite       (*out,frame[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(out,frame[act_frame],X,Y);
+    else     draw_sprite       (out,frame[act_frame],X,Y);
     
     // Specil gfx for weapon TODO
-    //line(*out,X+12,Y+20,X-(max_life-life),Y+20,makecol32(155,255,255));
+    //line(out,X+12,Y+20,X-(max_life-life),Y+20,makecol32(155,255,255));
    }
   if(hard)
    {
-    if(side) draw_sprite_h_flip(*out,frame[hard_frame],-sx+hit_x,-sy+hit_y);
-    else     draw_sprite       (*out,frame[hard_frame],-sx+hit_x,-sy+hit_y);
+    if(side) draw_sprite_h_flip(out,frame[hard_frame],-sx+hit_x,-sy+hit_y);
+    else     draw_sprite       (out,frame[hard_frame],-sx+hit_x,-sy+hit_y);
    }
   if(soft)
    {
-    if(side) draw_sprite_h_flip(*out,frame[soft_frame],-sx+hit_x,-sy+hit_y);
-    else     draw_sprite       (*out,frame[soft_frame],-sx+hit_x,-sy+hit_y);
+    if(side) draw_sprite_h_flip(out,frame[soft_frame],-sx+hit_x,-sy+hit_y);
+    else     draw_sprite       (out,frame[soft_frame],-sx+hit_x,-sy+hit_y);
    }
  }
 
@@ -563,13 +563,13 @@ int weapon::getMulti() { return multi; }
 
 void weapon::debug()
  {
- 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

@@ -14,17 +14,17 @@ class particle
    SAMPLE *sound[4];
    BITMAP *frame[_COL*_ROW];
    BITMAP *frame_col[_COL*_ROW];
-   BITMAP **out;
+   BITMAP *out;
    map *plat_map;
    map *hight_map;
    map *back_map;
 
    void loadSFXFrames(char *);
    void assignSFXFrame(particle *);
-   void setOutBitmap(BITMAP **);
+   void setOutBitmap(BITMAP *);
  	
   public:
-   particle(char *,int,int,BITMAP **,int i=0,particle *p=NULL);
+   particle(char *,int,int,BITMAP *,int i=0,particle *p=NULL);
    ~particle();
    void setStartX(int);
    void setStartY(int);
@@ -57,7 +57,7 @@ class particle
    void debug();
  };
 
-particle::particle(char *filename, int sx, int sy, BITMAP **out, int i, particle *p)
+particle::particle(char *filename, int sx, int sy, BITMAP *out, int i, particle *p)
  {
   _i=i;
   if(!_i) loadSFXFrames(filename); else assignSFXFrame(p);
@@ -125,7 +125,7 @@ void particle::assignSample(int n,particle *p)
   sound[n]=p->sound[n];
  }
 
-void particle::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void particle::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void particle::timeSFX()
  {
@@ -234,21 +234,21 @@ void particle::drawSFX(int sx,int sy)
    }
   X=-sx+pos_x-11; Y=-sy+pos_y-12;
 
-  drawing_mode(DRAW_MODE_TRANS,*out,0,0);
+  drawing_mode(DRAW_MODE_TRANS,out,0,0);
   set_trans_blender(0,0,0,alpha);
-  draw_trans_sprite(*out,frame[act_frame],X,Y);
-  //putpixel(*out,_X,_Y,makecol(220,220,220));
-  //if(ti[1]->isOn()) putpixel(*out,X,Y+1,makecol(190,190,190));
+  draw_trans_sprite(out,frame[act_frame],X,Y);
+  //putpixel(out,_X,_Y,makecol(220,220,220));
+  //if(ti[1]->isOn()) putpixel(out,X,Y+1,makecol(190,190,190));
   set_trans_blender(0,0,0,255);
-  drawing_mode(DRAW_MODE_SOLID,*out,0,0);
+  drawing_mode(DRAW_MODE_SOLID,out,0,0);
 
 /* 	if(act_frame>=1 && act_frame<=17) can_hit=true;  else can_hit=false;
   if(act_frame>=6 && act_frame<=17) hittable=true; else hittable=false;
   if(act_frame>=1 && act_frame<=5) is_hard=true;  else is_hard=false;
  	if(inScreen())
  	 {
-    if(side) draw_sprite_h_flip(*out,frame[act_frame],X,Y);
-    else     draw_sprite       (*out,frame[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(out,frame[act_frame],X,Y);
+    else     draw_sprite       (out,frame[act_frame],X,Y);
    }*/
  }
 
@@ -328,13 +328,13 @@ void particle::resetObj(bool act)
 
 void particle::debug()
  {
- 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

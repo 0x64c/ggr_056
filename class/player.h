@@ -41,7 +41,7 @@ class player : public _sprite
    void moveShild();
  	
   public:
-   player(char *,int,int,BITMAP **,int i=0, player *p=NULL);
+   player(char *,int,int,BITMAP *,int i=0, player *p=NULL);
    ~player();
    void drawSprite();
    void drawShild(bool);
@@ -107,7 +107,7 @@ class player : public _sprite
    void debug();
  };
 
-player::player(char *filename, int rsx, int rsy, BITMAP **bmp, int i, player *p) : _sprite(filename,bmp,rsx,rsy,i,p)
+player::player(char *filename, int rsx, int rsy, BITMAP *bmp, int i, player *p) : _sprite(filename,bmp,rsx,rsy,i,p)
  {
   BITMAP *aux;
   char str[255];
@@ -576,8 +576,8 @@ void player::drawSprite()
      {
    	  drawShild(true);
    	  drawCloak();
-      if(side) draw_sprite_h_flip(*screen,frames[act_frame+dress*25],X,Y);
-      else     draw_sprite       (*screen,frames[act_frame+dress*25],X,Y);
+      if(side) draw_sprite_h_flip(screen,frames[act_frame+dress*25],X,Y);
+      else     draw_sprite       (screen,frames[act_frame+dress*25],X,Y);
       drawShild(false);
      }
    }
@@ -586,8 +586,8 @@ void player::drawSprite()
    	drawShild(true);
    	drawCloak();
     drawGauge();
-   	if(side) draw_sprite_h_flip(*screen,frames[act_frame+dress*25],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame+dress*25],X,Y);
+   	if(side) draw_sprite_h_flip(screen,frames[act_frame+dress*25],X,Y);
+    else     draw_sprite       (screen,frames[act_frame+dress*25],X,Y);
     drawShild(false);
    }
 
@@ -596,12 +596,12 @@ void player::drawSprite()
   if(armour_down && armour_side)
    {
     for(int i=0;i<6;i++)
-     draw_sprite_h_flip(*screen,frames[i+6*dress+3*25],armo_x[i],armo_y[i]);
+     draw_sprite_h_flip(screen,frames[i+6*dress+3*25],armo_x[i],armo_y[i]);
    }
   if(armour_down && !armour_side)
    {
     for(int i=0;i<6;i++)
-     draw_sprite(*screen,frames[i+6*dress+3*25],armo_x[i],armo_y[i]);
+     draw_sprite(screen,frames[i+6*dress+3*25],armo_x[i],armo_y[i]);
    }
 
   // Shild hitted
@@ -609,27 +609,27 @@ void player::drawSprite()
   if(shild_down && shild_side)
    {
     for(int i=0;i<2;i++)
-     draw_sprite_h_flip(*screen,frames[94],shild_x[i],shild_y[i]);
+     draw_sprite_h_flip(screen,frames[94],shild_x[i],shild_y[i]);
    }
   if(shild_down && !shild_side)
    {
     for(int i=0;i<2;i++)
-     draw_sprite(*screen,frames[94],shild_x[i],shild_y[i]);
+     draw_sprite(screen,frames[94],shild_x[i],shild_y[i]);
    }
 
   // Risolve bug animazione scudo
-  if(act_frame==41 && shild) if(side) draw_sprite_h_flip(*screen,frames[7+5*25],X,Y);
-                             else     draw_sprite       (*screen,frames[7+5*25],X,Y);
+  if(act_frame==41 && shild) if(side) draw_sprite_h_flip(screen,frames[7+5*25],X,Y);
+                             else     draw_sprite       (screen,frames[7+5*25],X,Y);
   // Gold armour taked
   if(gold)
    {
     if(shild)
       {
-   	   if(side) { if(act_frame!=8) draw_sprite_h_flip(*screen,frames[7+5*25],X,Y); else draw_sprite_h_flip(*screen,frames[8+5*25],X,Y); }
-       else     { if(act_frame!=8) draw_sprite       (*screen,frames[7+5*25],X,Y); else draw_sprite       (*screen,frames[8+5*25],X,Y); }
+   	   if(side) { if(act_frame!=8) draw_sprite_h_flip(screen,frames[7+5*25],X,Y); else draw_sprite_h_flip(screen,frames[8+5*25],X,Y); }
+       else     { if(act_frame!=8) draw_sprite       (screen,frames[7+5*25],X,Y); else draw_sprite       (screen,frames[8+5*25],X,Y); }
       }
-   	if(gold_frame==91) draw_sprite(*screen,frames[bigfrm],X-30,Y-14);
-   	else draw_sprite(*screen,frames[gold_frame],X,Y);
+   	if(gold_frame==91) draw_sprite(screen,frames[bigfrm],X-30,Y-14);
+   	else draw_sprite(screen,frames[gold_frame],X,Y);
    }
 
   // Magic power fired
@@ -637,14 +637,14 @@ void player::drawSprite()
    {
 	// Parte di pugno mancante al frame
 	if(act_frame==43)
-     if(side) draw_sprite_h_flip(*screen,frames[act_frame+3*25],X,Y-46);
-     else     draw_sprite       (*screen,frames[act_frame+3*25],X,Y-46);
+     if(side) draw_sprite_h_flip(screen,frames[act_frame+3*25],X,Y-46);
+     else     draw_sprite       (screen,frames[act_frame+3*25],X,Y-46);
 
     if(shild)
       {
 	   if(act_frame==43)
-   	    if(side) { if(act_frame!=8) draw_sprite_h_flip(*screen,frames[7+5*25],X,Y); else draw_sprite_h_flip(*screen,frames[8+5*25],X,Y); }
-        else     { if(act_frame!=8) draw_sprite       (*screen,frames[7+5*25],X,Y); else draw_sprite       (*screen,frames[8+5*25],X,Y); }
+   	    if(side) { if(act_frame!=8) draw_sprite_h_flip(screen,frames[7+5*25],X,Y); else draw_sprite_h_flip(screen,frames[8+5*25],X,Y); }
+        else     { if(act_frame!=8) draw_sprite       (screen,frames[7+5*25],X,Y); else draw_sprite       (screen,frames[8+5*25],X,Y); }
       }
    }
 
@@ -661,16 +661,16 @@ void player::drawShild(bool first)
    {
     if(shild && !gold && dress!=3 && act_frame<41 && (act_frame!=0 || act_frame!=7 || act_frame!=9 || act_frame!=18 || act_frame!=19 || act_frame!=20 || act_frame!=21 || act_frame==22 || act_frame==23))
      {
-   	  if(side) draw_sprite_h_flip(*screen,frames[shild_frame],X,Y);
-      else     draw_sprite       (*screen,frames[shild_frame],X,Y);
+   	  if(side) draw_sprite_h_flip(screen,frames[shild_frame],X,Y);
+      else     draw_sprite       (screen,frames[shild_frame],X,Y);
      }
    }
   else
    {
     if(shild && !gold && dress!=3 && act_frame<41 && (act_frame==0 || act_frame==7 || act_frame==9 || act_frame==18 || act_frame==19 || act_frame==20 || act_frame==21 || act_frame==22 || act_frame==23))
      {
-   	  if(side) draw_sprite_h_flip(*screen,frames[shild_frame],X,Y);
-      else     draw_sprite       (*screen,frames[shild_frame],X,Y);
+   	  if(side) draw_sprite_h_flip(screen,frames[shild_frame],X,Y);
+      else     draw_sprite       (screen,frames[shild_frame],X,Y);
      } 	
    }
  }
@@ -681,14 +681,14 @@ void player::drawCloak()
   if(dress==2)
    {
   	if(act_frame>=1 && act_frame<=8 || act_frame==17)
-     if(side) draw_sprite_h_flip(*screen,frames[act_frame+4*25],X+46,Y);
-     else     draw_sprite       (*screen,frames[act_frame+4*25],X-46,Y);
+     if(side) draw_sprite_h_flip(screen,frames[act_frame+4*25],X+46,Y);
+     else     draw_sprite       (screen,frames[act_frame+4*25],X-46,Y);
     if(act_frame==9)
-   	 if(side) draw_sprite_h_flip(*screen,frames[act_frame+4*25],X,Y+46);
-     else     draw_sprite       (*screen,frames[act_frame+4*25],X,Y+46);    
+   	 if(side) draw_sprite_h_flip(screen,frames[act_frame+4*25],X,Y+46);
+     else     draw_sprite       (screen,frames[act_frame+4*25],X,Y+46);    
     if(act_frame==16)
-   	 if(side) draw_sprite_h_flip(*screen,frames[act_frame+4*25],X,Y-46);
-     else     draw_sprite       (*screen,frames[act_frame+4*25],X,Y-46);    
+   	 if(side) draw_sprite_h_flip(screen,frames[act_frame+4*25],X,Y-46);
+     else     draw_sprite       (screen,frames[act_frame+4*25],X,Y-46);    
    }
  }
 
@@ -700,13 +700,13 @@ void player::drawGauge()
    {
    	if(gauge==76)
    	 {
-      if(side) draw_sprite_h_flip(*screen,frames[gauge_frame+3+4*25],X,Y);
-      else     draw_sprite       (*screen,frames[gauge_frame+3+4*25],X,Y);
+      if(side) draw_sprite_h_flip(screen,frames[gauge_frame+3+4*25],X,Y);
+      else     draw_sprite       (screen,frames[gauge_frame+3+4*25],X,Y);
      }
     else
    	 {
-      if(side) draw_sprite_h_flip(*screen,frames[gauge_frame+4*25],X,Y);
-      else     draw_sprite       (*screen,frames[gauge_frame+4*25],X,Y);
+      if(side) draw_sprite_h_flip(screen,frames[gauge_frame+4*25],X,Y);
+      else     draw_sprite       (screen,frames[gauge_frame+4*25],X,Y);
      }
    }
   if(ti[7]->isOn()) gauge_frame++; if(gauge_frame>21) gauge_frame=19; 	
@@ -884,15 +884,15 @@ void player::calcMax()
 
 void player::debug()
  {
-  putpixel(*screen,pos_x,pos_y,makecol32(255,0,255));
-  putpixel(*screen,pos_x+1,pos_y,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y+1,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-1,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y,makecol32(255,0,255));
+  putpixel(screen,pos_x+1,pos_y,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y+1,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-1,makecol32(255,0,0));
  	
-  for(int i=0;i<18;i++) putpixel(*screen,pos_x,pos_y-30+62-i,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  for(int i=0;i<18;i++) putpixel(screen,pos_x,pos_y-30+62-i,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

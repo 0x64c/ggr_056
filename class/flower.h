@@ -23,7 +23,7 @@ class flower : public _sprite
    void shootBullet();
 
   public:
-   flower(char *,int,int,BITMAP **,int i=0,flower *p=NULL);
+   flower(char *,int,int,BITMAP *,int i=0,flower *p=NULL);
    ~flower();
    void setMinX(int);
    void setMaxX(int);
@@ -57,7 +57,7 @@ class flower : public _sprite
    void debug();
  };
 
-flower::flower(char *filename, int sx, int sy, BITMAP **bmp, int i, flower *p) : _sprite(filename,bmp,sx,sy,i,p)
+flower::flower(char *filename, int sx, int sy, BITMAP *bmp, int i, flower *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   min_x=max_x=0;
   // Bullet (assegno i frame ai proiettili prendendoli dalla memoria già allocata)
@@ -217,8 +217,8 @@ void flower::drawSprite(int sx,int sy)
   if(act_frame>=24 && act_frame<=25) { can_hit=true; hittable=true; }
  	if(inScreen())
  	 {
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
+    else     draw_sprite       (screen,frames[act_frame],X,Y);
    }
 
  	// Bullet
@@ -318,13 +318,13 @@ void flower::resetObj(bool enb)
 
 void flower::debug()
  {
-  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

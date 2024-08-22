@@ -8,12 +8,12 @@ class thunder
  	 int alpha,act_frame,c0,c1,c2,start_deep;
  	 timer *ti[5];
  	 SAMPLE *sound[4];
- 	 BITMAP **out,*aux_bmp;
+ 	 BITMAP *out,*aux_bmp;
 
- 	 void setOutBitmap(BITMAP **);
+ 	 void setOutBitmap(BITMAP *);
  	
  	public:
- 	 thunder(int,int,BITMAP **,int i=0,thunder *p=NULL);
+ 	 thunder(int,int,BITMAP *,int i=0,thunder *p=NULL);
  	 ~thunder();
  	 void drawSFX(int,int);
  	 void timeSFX();
@@ -42,7 +42,7 @@ class thunder
  	 void debug();
  };
 
-thunder::thunder(int sx, int sy, BITMAP **out, int i, thunder *p)
+thunder::thunder(int sx, int sy, BITMAP *out, int i, thunder *p)
  {
  	_i=i;
  	start_x=sx; start_y=sy;
@@ -73,7 +73,7 @@ void thunder::loadSample(char *filename, int n)
  	sound[n]=load_sample(filename);
  }
 
-void thunder::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void thunder::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void thunder::timeSFX()
  {
@@ -121,11 +121,11 @@ void thunder::drawSFX(int sx,int sy)
   X=-sx+pos_x; Y=-sy+pos_y;
   if(inScreen())
    {
-    drawing_mode(DRAW_MODE_TRANS,*out,0,0);
+    drawing_mode(DRAW_MODE_TRANS,out,0,0);
     set_trans_blender(0,0,0,alpha);
-    draw_trans_sprite(*out,aux_bmp,X,Y);
+    draw_trans_sprite(out,aux_bmp,X,Y);
     set_trans_blender(0,0,0,255);
-    drawing_mode(DRAW_MODE_SOLID,*out,0,0);
+    drawing_mode(DRAW_MODE_SOLID,out,0,0);
    }
  }
 
@@ -167,13 +167,13 @@ void thunder::resetSFX(bool act)
 
 void thunder::debug()
  {
- 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

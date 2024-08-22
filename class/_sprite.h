@@ -8,12 +8,12 @@ class _sprite
    int rows,columns,width,height; // Sprite frame size in bitmap file
    int act_frame;                 // Sprite current frame
    bool enabled;
-   BITMAP **screen;
+   BITMAP *screen;
    BITMAP **frames;               // Normal frames
    BITMAP **frames_collision;     // Collision frames
 
   public:
-   _sprite(char *,BITMAP **,int,int,int,_sprite *);
+   _sprite(char *,BITMAP *,int,int,int,_sprite *);
    ~_sprite();
    void loadSprite(char *,_sprite *);
    void loadData(char *);
@@ -23,7 +23,7 @@ class _sprite
    void setX(int);
    void setY(int);
    void setCurrentFrame(int);
-   void setScreen(BITMAP **);
+   void setScreen(BITMAP *);
    int getRows();
    int getColumns();
    int getWidth();
@@ -35,7 +35,7 @@ class _sprite
    bool isEnabled();
  };
 
-_sprite::_sprite(char *filename,BITMAP **bmp,int sx,int sy,int i,_sprite *p)
+_sprite::_sprite(char *filename,BITMAP *bmp,int sx,int sy,int i,_sprite *p)
  {
   index = i;
   loadSprite(filename,p);
@@ -111,7 +111,7 @@ void _sprite::setY(int y)            { Y = y; }
 
 void _sprite::setCurrentFrame(int f) { act_frame = f; }
 
-void _sprite::setScreen(BITMAP **bmp) { screen = bmp; }
+void _sprite::setScreen(BITMAP *bmp) { screen = bmp; }
 
 int _sprite::getRows()         { return rows;    }
 

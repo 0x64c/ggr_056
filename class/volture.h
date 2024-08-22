@@ -15,7 +15,7 @@ class volture : public _sprite
    map *back_map;
 	
   public:
-   volture(char *,int,int,BITMAP **,int i=0,volture *p=NULL);
+   volture(char *,int,int,BITMAP *,int i=0,volture *p=NULL);
    ~volture();
    void drawSprite(int,int);
    void timeSprite();
@@ -39,7 +39,7 @@ class volture : public _sprite
    void debug();
  };
 
-volture::volture(char *filename, int sx, int sy, BITMAP **bmp, int i, volture *p) : _sprite(filename,bmp,sx,sy,i,p)
+volture::volture(char *filename, int sx, int sy, BITMAP *bmp, int i, volture *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   resetObj(true);
   ti[0]=new timer(4);  // Anim time
@@ -162,8 +162,8 @@ void volture::drawSprite(int sx,int sy)
   if(act_frame<3 || act_frame==19) hittable=true; else hittable=false;
   if(inScreen())
    {
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
+    else     draw_sprite       (screen,frames[act_frame],X,Y);
    }
  }
 
@@ -222,13 +222,13 @@ void volture::resetObj(bool enb)
 
 void volture::debug()
  {
-  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

@@ -52,8 +52,8 @@ bool hitTest8(BITMAP *obj1,BITMAP *obj2,int x1,int y1,int x2,int y2)
  	//draw_sprite(o1,obj1,x1,y1);
  	//draw_sprite(o2,obj2,x2,y2);
  	
- 	//draw_sprite(*screenobj1,x1,y1);
- 	//draw_sprite(*screenobj2,x2,y2);
+ 	//draw_sprite(screen,obj1,x1,y1);
+ 	//draw_sprite(screen,obj2,x2,y2);
  	
  	//obj1=o1; obj2=o2;
  	
@@ -73,7 +73,7 @@ bool hitTest8(BITMAP *obj1,BITMAP *obj2,int x1,int y1,int x2,int y2)
          xx1=x1+j1; yy1=y1+i1;
          xx2=x2+j2; yy2=y2+i2;
          if(xx1==xx2 && yy1==yy2) { /*destroy_bitmap(o1); destroy_bitmap(o2);*/ return true; }
-         //if(xx1==xx2 && yy1==yy2) { putpixel(*screen,xx1,yy1,makecol(255,0,0)); }
+         //if(xx1==xx2 && yy1==yy2) { putpixel(screen,xx1,yy1,makecol(255,0,0)); }
         }
       }
    }
@@ -89,8 +89,8 @@ bool hitTestFast8(BITMAP *obj1,BITMAP *obj2,int x1,int y1,int x2,int y2,int step
   int xmax2,ymax2,xmin2,ymin2;
   int xx1,yy1,xx2,yy2;
 
-  //draw_sprite(*screenobj1,x1,y1);
-  //draw_sprite(*screenobj2,x2,y2);
+  //draw_sprite(screen,obj1,x1,y1);
+  //draw_sprite(screen,obj2,x2,y2);
   xmin1=x1; ymin1=y1; xmax1=x1+obj1->w; ymax1=y1+obj1->h;
   xmin2=x2; ymin2=y2; xmax2=x2+obj2->w; ymax2=y2+obj2->h;
   if(xmin1<xmax2 && ymin1<ymax2 && xmin2<xmax1 && ymin2<ymax1)
@@ -103,7 +103,7 @@ bool hitTestFast8(BITMAP *obj1,BITMAP *obj2,int x1,int y1,int x2,int y2,int step
          xx1=x1+j1; yy1=y1+i1;
          xx2=x2+j2; yy2=y2+i2;
          if(xx1==xx2 && yy1==yy2) return true;
-         //if(xx1==xx2 && yy1==yy2) { putpixel(*screen,xx1,yy1,makecol(255,0,0)); }
+         //if(xx1==xx2 && yy1==yy2) { putpixel(screen,xx1,yy1,makecol(255,0,0)); }
         }
       }
    }
@@ -131,7 +131,7 @@ bool hitTest24(BITMAP *obj1,BITMAP *obj2,int x1,int y1,int x2,int y2)
          xx1=x1+(j1>>2); yy1=(y1>>2)+i1;
          xx2=x2+(j2>>2); yy2=(y2>>2)+i2;
          if(xx1==xx2 && yy1==yy2) return true;
-         //if(xx1==xx2 && yy1==yy2) { putpixel(*screen,xx1,yy1,makecol(255,0,0)); }
+         //if(xx1==xx2 && yy1==yy2) { putpixel(screen,xx1,yy1,makecol(255,0,0)); }
         }
       }
    }

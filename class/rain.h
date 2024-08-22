@@ -14,17 +14,17 @@ class rain
  	 SAMPLE *sound[4];
  	 //BITMAP *frame[100];
  	 //BITMAP *frame_col[100];
- 	 BITMAP **out,*rain_bmp;
+ 	 BITMAP *out,*rain_bmp;
  	 int TRA,COL1,COL2,COL3;
  	 unsigned char rain_map[640][50];
  	 map *plat_map;
  	 map *hight_map;
  	 map *back_map;
 
- 	 void setOutBitmap(BITMAP **);
+ 	 void setOutBitmap(BITMAP *);
  	
  	public:
- 	 rain(int,int,BITMAP **,int i=0,rain *p=NULL);
+ 	 rain(int,int,BITMAP *,int i=0,rain *p=NULL);
  	 ~rain();
  	 void drawSFX(int,int);
  	 void timeSFX();
@@ -51,7 +51,7 @@ class rain
  	 void debug();
  };
 
-rain::rain(int sx, int sy, BITMAP **out, int i, rain *p)
+rain::rain(int sx, int sy, BITMAP *out, int i, rain *p)
  {
  	_i=i;
  	start_x=sx; start_y=sy;
@@ -87,7 +87,7 @@ void rain::loadSample(char *filename, int n)
  	sound[n]=load_sample(filename);
  }
 
-void rain::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void rain::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void rain::timeSFX()
  {
@@ -134,7 +134,7 @@ void rain::drawSFX(int sx,int sy)
        }
      }
     if(max_drops<num_drops) if(ti[0]->isOn()) max_drops++;
- 	 	masked_blit(rain_bmp,*out,2,0,0,0,rain_bmp->w-4,rain_bmp->h);
+ 	 	masked_blit(rain_bmp,out,2,0,0,0,rain_bmp->w-4,rain_bmp->h);
    }
  }
 
@@ -218,13 +218,13 @@ void rain::resetSFX(bool act,int ty)
 
 void rain::debug()
  {
- 	putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+ 	putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

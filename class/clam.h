@@ -20,7 +20,7 @@ class clam : public _sprite
    void shootBullet();
  	
   public:
-   clam(char *,int,int,BITMAP **,int i=0,clam *p=NULL);
+   clam(char *,int,int,BITMAP *,int i=0,clam *p=NULL);
    ~clam();
    void drawSprite(int,int);
    void timeSprite();
@@ -49,7 +49,7 @@ class clam : public _sprite
    void debug();
  };
 
-clam::clam(char *filename, int sx, int sy, BITMAP **bmp, int i, clam *p) : _sprite(filename,bmp,sx,sy,i,p)
+clam::clam(char *filename, int sx, int sy, BITMAP *bmp, int i, clam *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   // Bullet (assegno i frame ai proiettili prendendoli dalla memoria già allocata)
   // Per adesso nessun "sound" è assegnato ai proiettili
@@ -150,8 +150,8 @@ void clam::drawSprite(int sx,int sy)
   if(act_frame<5 || (act_frame>=25 && act_frame<27)) hittable=true; else hittable=false;
   if(inScreen())
    {
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
+    else     draw_sprite       (screen,frames[act_frame],X,Y);
    }
   // Bullet
   for(int i=0;i<N_BU;i++)
@@ -230,13 +230,13 @@ void clam::resetObj(bool enb)
 
 void clam::debug()
  {
-  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

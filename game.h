@@ -35,9 +35,6 @@
 #define N_BVASE 8
 
 #ifdef linux
-#include <sys/stat.h>
-//debug
-#include <signal.h>
 #undef CFGFILE
 char CFGFILE[256] = "./config.cfg";
 #endif
@@ -57,7 +54,6 @@ int READY_GO_TIME=80;
 bool TIMEOVER,RETIME;
 
 BITMAP *VSCR;
-BITMAP *PAGES[2];
 MIDI *music[N_STAGE];
 
 player           *PL;
@@ -141,9 +137,7 @@ void init()
   install_keyboard();
   install_sound(DIGI_AUTODETECT,MIDI_AUTODETECT,NULL);
   set_volume(SOUND_VOLUME,MUSIC_VOLUME); 
-  PAGES[0]=create_bitmap_ex(SCREEND,G_RESX,G_RESY);
-  PAGES[1]=create_bitmap_ex(SCREEND,G_RESX,G_RESY);
-  VSCR=PAGES[0];
+  VSCR=create_bitmap_ex(SCREEND,G_RESX,G_RESY);
   set_color_depth(SCREEND);
 
   // Set the screen
@@ -1287,7 +1281,7 @@ void initObjects()
   // LOADING OBJECTS ...
   textprintf_ex(screen,font,1,12*2,txtcol,-1,"Loading Objects ..."); drawBar(5,txtcol,SCREENX);
   // Player
-  PL=new   player("data/obj/player/player",0,0,&VSCR);
+  PL=new   player("data/obj/player/player",0,0,VSCR);
   PL->setKeyboardLayout(KEYLEFT,KEYRIGHT,KEYUP,KEYDOWN,KEYJUMP,KEYSHOOT);
   PL->setNStage(N_STAGE);
   PL->setStageP(&STAGE);
@@ -1297,144 +1291,144 @@ void initObjects()
   PL->setScoreP(&SCORE);
   PL->setCkPointP(&CKPOINT);
   // OSD
-  OSD=new osd("data/obj/player/osd.bmp",0,0,&VSCR);
+  OSD=new osd("data/obj/player/osd.bmp",0,0,VSCR);
   OSD->setLivesP(&LIVES); OSD->setScoreP(&SCORE); OSD->setMagicpwP(PL->getMagicpwP()); OSD->setMagicGaugeP(PL->getMagicGaugeP()); OSD->setMinSecP(&MIN,&SEC);
   PL->setOSD(OSD);
   // Blades
-  BL[0]=new blade("data/obj/enemies/blade",0,0,0,0,&VSCR);
-  for(int i=1;i<N_BL-1;i++) BL[i]=new blade("",0,0,0,0,&VSCR,0,i,BL[0]);
-  BL[6]=new blade("",0,0,0,0,&VSCR,1,6,BL[0]);
+  BL[0]=new blade("data/obj/enemies/blade",0,0,0,0,VSCR);
+  for(int i=1;i<N_BL-1;i++) BL[i]=new blade("",0,0,0,0,VSCR,0,i,BL[0]);
+  BL[6]=new blade("",0,0,0,0,VSCR,1,6,BL[0]);
   // Rockfall
-  RF[0]=new rockfall("data/obj/enemies/rockfall",0,0,0,0,&VSCR);
-  for(int i=1;i<N_RF;i++) RF[i]=new rockfall("",0,0,0,0,&VSCR,0,i,RF[0]);
+  RF[0]=new rockfall("data/obj/enemies/rockfall",0,0,0,0,VSCR);
+  for(int i=1;i<N_RF;i++) RF[i]=new rockfall("",0,0,0,0,VSCR,0,i,RF[0]);
   // Skeleton
-  SK[0]=new skeleton("data/obj/enemies/skeleton",0,0,&VSCR);
-  for(int i=1;i<N_SK;i++) SK[i]=new skeleton("",0,0,&VSCR,i,SK[0]);
+  SK[0]=new skeleton("data/obj/enemies/skeleton",0,0,VSCR);
+  for(int i=1;i<N_SK;i++) SK[i]=new skeleton("",0,0,VSCR,i,SK[0]);
   // Zombie
-  ZO[0]=new zombie("data/obj/enemies/zombie",0,0,&VSCR);
-  for(int i=1;i<N_ZO;i++) ZO[i]=new zombie("",0,0,&VSCR,i,ZO[0]);
+  ZO[0]=new zombie("data/obj/enemies/zombie",0,0,VSCR);
+  for(int i=1;i<N_ZO;i++) ZO[i]=new zombie("",0,0,VSCR,i,ZO[0]);
   // Volture
-  VO[0]=new volture("data/obj/enemies/volture",0,0,&VSCR);
-  for(int i=1;i<N_VO;i++) VO[i]=new volture("",0,0,&VSCR,i,VO[0]);
+  VO[0]=new volture("data/obj/enemies/volture",0,0,VSCR);
+  for(int i=1;i<N_VO;i++) VO[i]=new volture("",0,0,VSCR,i,VO[0]);
   // Red arremer
-  RA[0]=new red_arremer("data/obj/enemies/red_arremer",0,0,&VSCR);
-  for(int i=1;i<N_RA;i++) RA[i]=new red_arremer("",0,0,&VSCR,i,RA[0]);
+  RA[0]=new red_arremer("data/obj/enemies/red_arremer",0,0,VSCR);
+  for(int i=1;i<N_RA;i++) RA[i]=new red_arremer("",0,0,VSCR,i,RA[0]);
   for(int i=0;i<N_RA;i++) { RA[i]->setCtrlXP(PL->getGlobXP()); RA[i]->setCtrlYP(PL->getGlobYP()); }
   // Red arremer King
-  RK[0]=new red_arremer_king("data/obj/enemies/red_arremer_king",0,0,&VSCR);
+  RK[0]=new red_arremer_king("data/obj/enemies/red_arremer_king",0,0,VSCR);
   for(int i=0;i<N_RK;i++) { RK[i]->setCtrlXP(PL->getGlobXP()); RK[i]->setCtrlYP(PL->getGlobYP()); }
   // Plant mk2
-  P2[0]=new plant_mk2("data/obj/enemies/plant_mk2",0,0,&VSCR);
-  for(int i=1;i<N_P2;i++) P2[i]=new plant_mk2("",0,0,&VSCR,i,P2[0]);
+  P2[0]=new plant_mk2("data/obj/enemies/plant_mk2",0,0,VSCR);
+  for(int i=1;i<N_P2;i++) P2[i]=new plant_mk2("",0,0,VSCR,i,P2[0]);
   for(int i=0;i<N_P2;i++) { P2[i]->setCtrlXP(PL->getGlobXP()); P2[i]->setCtrlYP(PL->getGlobYP()); }
   // Stalagmite
-  ST[0]=new stalagmite("data/obj/enemies/stalagmite",0,0,&VSCR);
-  for(int i=1;i<N_ST;i++) ST[i]=new stalagmite("",0,0,&VSCR,i,ST[0]);
+  ST[0]=new stalagmite("data/obj/enemies/stalagmite",0,0,VSCR);
+  for(int i=1;i<N_ST;i++) ST[i]=new stalagmite("",0,0,VSCR,i,ST[0]);
   for(int i=0;i<N_ST;i++) { ST[i]->setCtrlXP(PL->getGlobXP()); ST[i]->setCtrlYP(PL->getGlobYP()); }
   // Ghost
-  GO[0]=new ghost("data/obj/enemies/ghost",0,0,&VSCR);
-  for(int i=1;i<N_GO;i++) GO[i]=new ghost("",0,0,&VSCR,i,GO[0]);
+  GO[0]=new ghost("data/obj/enemies/ghost",0,0,VSCR);
+  for(int i=1;i<N_GO;i++) GO[i]=new ghost("",0,0,VSCR,i,GO[0]);
   for(int i=0;i<N_GO;i++) { GO[i]->setCtrlXP(PL->getGlobXP()); GO[i]->setCtrlYP(PL->getGlobYP()); }
   // Bat
-  BA[0]=new bat("data/obj/enemies/bat",0,0,&VSCR);
-  for(int i=1;i<N_BA;i++) BA[i]=new bat("",0,0,&VSCR,i,BA[0]);
+  BA[0]=new bat("data/obj/enemies/bat",0,0,VSCR);
+  for(int i=1;i<N_BA;i++) BA[i]=new bat("",0,0,VSCR,i,BA[0]);
   for(int i=0;i<N_BA;i++) { BA[i]->setCtrlXP(PL->getGlobXP()); BA[i]->setCtrlYP(PL->getGlobYP()); }
   // Giant
-  GI[0]=new giant("data/obj/enemies/giant",0,0,&VSCR);
-  for(int i=1;i<N_GI;i++) GI[i]=new giant("",0,0,&VSCR,i,GI[0]);
+  GI[0]=new giant("data/obj/enemies/giant",0,0,VSCR);
+  for(int i=1;i<N_GI;i++) GI[i]=new giant("",0,0,VSCR,i,GI[0]);
   for(int i=0;i<N_GI;i++) { GI[i]->setCtrlXP(PL->getGlobXP()); GI[i]->setCtrlYP(PL->getGlobYP()); }
   // Firewall
-  FW[0]=new firewall("data/obj/enemies/firewall",0,0,0,0,&VSCR);
-  for(int i=1;i<N_FW;i++) FW[i]=new firewall("",0,0,0,0,&VSCR,i,FW[0]);
+  FW[0]=new firewall("data/obj/enemies/firewall",0,0,0,0,VSCR);
+  for(int i=1;i<N_FW;i++) FW[i]=new firewall("",0,0,0,0,VSCR,i,FW[0]);
   // Insect
-  IN[0]=new insect("data/obj/enemies/insect",0,0,&VSCR);
-  for(int i=1;i<N_IN;i++) IN[i]=new insect("",0,0,&VSCR,i,IN[0]);
+  IN[0]=new insect("data/obj/enemies/insect",0,0,VSCR);
+  for(int i=1;i<N_IN;i++) IN[i]=new insect("",0,0,VSCR,i,IN[0]);
   for(int i=0;i<N_IN;i++) { IN[i]->setCtrlXP(PL->getGlobXP()); IN[i]->setCtrlYP(PL->getGlobYP()); }
   // Fire grizzly
-  FG[0]=new fire_grizzly("data/obj/enemies/fire_grizzly",0,0,&VSCR);
-  for(int i=1;i<N_FG;i++) FG[i]=new fire_grizzly("",0,0,&VSCR,i,FG[0]);
+  FG[0]=new fire_grizzly("data/obj/enemies/fire_grizzly",0,0,VSCR);
+  for(int i=1;i<N_FG;i++) FG[i]=new fire_grizzly("",0,0,VSCR,i,FG[0]);
   for(int i=0;i<N_FG;i++) { FG[i]->setCtrlXP(PL->getGlobXP()); FG[i]->setCtrlYP(PL->getGlobYP()); }
   // Clam
-  CL[0]=new clam("data/obj/enemies/clam",0,0,&VSCR);
-  for(int i=1;i<N_CL;i++) CL[i]=new clam("",0,0,&VSCR,i,CL[0]);
+  CL[0]=new clam("data/obj/enemies/clam",0,0,VSCR);
+  for(int i=1;i<N_CL;i++) CL[i]=new clam("",0,0,VSCR,i,CL[0]);
   for(int i=0;i<N_CL;i++) { CL[i]->setCtrlXP(PL->getGlobXP()); CL[i]->setCtrlYP(PL->getGlobYP()); }
   // Turtle
-  TU[0]=new turtle("data/obj/enemies/turtle",0,0,&VSCR);
-  for(int i=1;i<N_TU;i++) TU[i]=new turtle("",0,0,&VSCR,i,TU[0]);
+  TU[0]=new turtle("data/obj/enemies/turtle",0,0,VSCR);
+  for(int i=1;i<N_TU;i++) TU[i]=new turtle("",0,0,VSCR,i,TU[0]);
   for(int i=0;i<N_TU;i++) { TU[i]->setCtrlXP(PL->getGlobXP()); TU[i]->setCtrlYP(PL->getGlobYP()); }
   // Demon
-  DE[0]=new demon("data/obj/enemies/demon",0,0,&VSCR);
-  for(int i=1;i<N_DE;i++) DE[i]=new demon("",0,0,&VSCR,i,DE[0]);
+  DE[0]=new demon("data/obj/enemies/demon",0,0,VSCR);
+  for(int i=1;i<N_DE;i++) DE[i]=new demon("",0,0,VSCR,i,DE[0]);
   for(int i=0;i<N_DE;i++) { DE[i]->setCtrlXP(PL->getGlobXP()); DE[i]->setCtrlYP(PL->getGlobYP()); }
   // Little devils
-  LD[0]=new little_devil("data/obj/enemies/little_devil",0,0,&VSCR);
-  for(int i=1;i<N_LD;i++) LD[i]=new little_devil("",0,0,&VSCR,i,LD[0]);
+  LD[0]=new little_devil("data/obj/enemies/little_devil",0,0,VSCR);
+  for(int i=1;i<N_LD;i++) LD[i]=new little_devil("",0,0,VSCR,i,LD[0]);
   for(int i=0;i<N_LD;i++) { LD[i]->setCtrlXP(PL->getGlobXP()); LD[i]->setCtrlYP(PL->getGlobYP()); }
   // Big crab
-  BC[0]=new big_crab("data/obj/enemies/big_crab",0,0,&VSCR);
-  for(int i=1;i<N_BC;i++) BC[i]=new big_crab("",0,0,&VSCR,i,BC[0]);
+  BC[0]=new big_crab("data/obj/enemies/big_crab",0,0,VSCR);
+  for(int i=1;i<N_BC;i++) BC[i]=new big_crab("",0,0,VSCR,i,BC[0]);
   for(int i=0;i<N_BC;i++) { BC[i]->setCtrlXP(PL->getGlobXP()); BC[i]->setCtrlYP(PL->getGlobYP()); }
   // Pork
-  PO[0]=new pork("data/obj/enemies/pork",0,0,&VSCR);
-  for(int i=1;i<N_PO;i++) PO[i]=new pork("",0,0,&VSCR,i,PO[0]);
+  PO[0]=new pork("data/obj/enemies/pork",0,0,VSCR);
+  for(int i=1;i<N_PO;i++) PO[i]=new pork("",0,0,VSCR,i,PO[0]);
   for(int i=0;i<N_PO;i++) { PO[i]->setCtrlXP(PL->getGlobXP()); PO[i]->setCtrlYP(PL->getGlobYP()); }
   // Magician
-  MA[0]=new magician("data/obj/enemies/magician",0,0,&VSCR);
-  for(int i=1;i<N_MA;i++) MA[i]=new magician("",0,0,&VSCR,i,MA[0]);
+  MA[0]=new magician("data/obj/enemies/magician",0,0,VSCR);
+  for(int i=1;i<N_MA;i++) MA[i]=new magician("",0,0,VSCR,i,MA[0]);
   for(int i=0;i<N_MA;i++) { MA[i]->setCtrlXP(PL->getGlobXP()); MA[i]->setCtrlYP(PL->getGlobYP()); }
   // Flower
-  FL[0]=new flower("data/obj/enemies/flower",0,0,&VSCR);
-  for(int i=1;i<N_FL;i++) FL[i]=new flower("",0,0,&VSCR,i,FL[0]);
+  FL[0]=new flower("data/obj/enemies/flower",0,0,VSCR);
+  for(int i=1;i<N_FL;i++) FL[i]=new flower("",0,0,VSCR,i,FL[0]);
   for(int i=0;i<N_FL;i++) { FL[i]->setCtrlXP(PL->getGlobXP()); FL[i]->setCtrlYP(PL->getGlobYP()); }
   // Immobile enemies
-  IMMOBILE[0]=new immobile("data/obj/enemies/immobile",0,0,0,0,&VSCR);
-  for(int i=1;i<N_IMMOBILE;i++) IMMOBILE[i]=new immobile("",0,0,0,0,&VSCR,0,i,IMMOBILE[0]);
+  IMMOBILE[0]=new immobile("data/obj/enemies/immobile",0,0,0,0,VSCR);
+  for(int i=1;i<N_IMMOBILE;i++) IMMOBILE[i]=new immobile("",0,0,0,0,VSCR,0,i,IMMOBILE[0]);
 
   // Mobile (da 0 a 11 Magic box)
   MOBILE=(mobile **)malloc(sizeof(mobile *)*N_PLAT);
-  MOBILE[0] =new mobile("data/obj/mobile/mobile.bmp","data/obj/mobile/mobile.dat",0,0,44,49,2,&VSCR);
-  MOBILE[1] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,1, MOBILE[0]);
-  MOBILE[2] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,2, MOBILE[0]);
-  MOBILE[3] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,3, MOBILE[0]);
-  MOBILE[4] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,4, MOBILE[0]);
-  MOBILE[5] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,5, MOBILE[0]);
-  MOBILE[6] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,6, MOBILE[0]);
-  MOBILE[7] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,7, MOBILE[0]);
-  MOBILE[8] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,8, MOBILE[0]);
-  MOBILE[9] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,9, MOBILE[0]);
-  MOBILE[10]=new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,10,MOBILE[0]);
-  MOBILE[11]=new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,&VSCR,11,MOBILE[0]);
-  MOBILE[12]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,&VSCR,12,MOBILE[0]);
-  MOBILE[13]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,&VSCR,13,MOBILE[0]);
-  MOBILE[14]=new mobile("","data/obj/mobile/mobile.dat",0,0,02,02,0,&VSCR,14,MOBILE[0]);
-  MOBILE[15]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,&VSCR,15,MOBILE[0]);
-  MOBILE[16]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,&VSCR,16,MOBILE[0]);
-  MOBILE[17]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,&VSCR,17,MOBILE[0]);
-  MOBILE[18]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,&VSCR,18,MOBILE[0]);
-  MOBILE[19]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,&VSCR,19,MOBILE[0]);
-  MOBILE[20]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,&VSCR,20,MOBILE[0]);
-  MOBILE[21]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,&VSCR,21,MOBILE[0]);
-  MOBILE[22]=new mobile("","data/obj/mobile/mobile.dat",0,0,23,23,0,&VSCR,22,MOBILE[0]);
-  MOBILE[23]=new mobile("","data/obj/mobile/mobile.dat",0,0,23,23,0,&VSCR,23,MOBILE[0]);
-  MOBILE[24]=new mobile("","data/obj/mobile/mobile.dat",0,0,24,24,0,&VSCR,24,MOBILE[0]);
-  MOBILE[25]=new mobile("","data/obj/mobile/mobile.dat",0,0,22,22,0,&VSCR,25,MOBILE[0]);
-  MOBILE[26]=new mobile("","data/obj/mobile/mobile.dat",0,0,22,22,0,&VSCR,26,MOBILE[0]);
-  MOBILE[27]=new mobile("","data/obj/mobile/mobile.dat",0,0,25,25,0,&VSCR,27,MOBILE[0]);
-  MOBILE[28]=new mobile("","data/obj/mobile/mobile.dat",0,0,25,25,0,&VSCR,28,MOBILE[0]);
-  MOBILE[29]=new mobile("","data/obj/mobile/mobile.dat",0,0,26,26,0,&VSCR,29,MOBILE[0]);
-  MOBILE[30]=new mobile("","data/obj/mobile/mobile.dat",0,0,27,27,0,&VSCR,30,MOBILE[0]);
-  MOBILE[31]=new mobile("","data/obj/mobile/mobile.dat",0,0,28,28,0,&VSCR,31,MOBILE[0]);
+  MOBILE[0] =new mobile("data/obj/mobile/mobile.bmp","data/obj/mobile/mobile.dat",0,0,44,49,2,VSCR);
+  MOBILE[1] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,1, MOBILE[0]);
+  MOBILE[2] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,2, MOBILE[0]);
+  MOBILE[3] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,3, MOBILE[0]);
+  MOBILE[4] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,4, MOBILE[0]);
+  MOBILE[5] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,5, MOBILE[0]);
+  MOBILE[6] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,6, MOBILE[0]);
+  MOBILE[7] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,7, MOBILE[0]);
+  MOBILE[8] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,8, MOBILE[0]);
+  MOBILE[9] =new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,9, MOBILE[0]);
+  MOBILE[10]=new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,10,MOBILE[0]);
+  MOBILE[11]=new mobile("","data/obj/mobile/mobile.dat",0,0,00,00,2,VSCR,11,MOBILE[0]);
+  MOBILE[12]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,VSCR,12,MOBILE[0]);
+  MOBILE[13]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,VSCR,13,MOBILE[0]);
+  MOBILE[14]=new mobile("","data/obj/mobile/mobile.dat",0,0,02,02,0,VSCR,14,MOBILE[0]);
+  MOBILE[15]=new mobile("","data/obj/mobile/mobile.dat",0,0,01,01,0,VSCR,15,MOBILE[0]);
+  MOBILE[16]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,VSCR,16,MOBILE[0]);
+  MOBILE[17]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,VSCR,17,MOBILE[0]);
+  MOBILE[18]=new mobile("","data/obj/mobile/mobile.dat",0,0,03,04,1,VSCR,18,MOBILE[0]);
+  MOBILE[19]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,VSCR,19,MOBILE[0]);
+  MOBILE[20]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,VSCR,20,MOBILE[0]);
+  MOBILE[21]=new mobile("","data/obj/mobile/mobile.dat",0,0,05,05,0,VSCR,21,MOBILE[0]);
+  MOBILE[22]=new mobile("","data/obj/mobile/mobile.dat",0,0,23,23,0,VSCR,22,MOBILE[0]);
+  MOBILE[23]=new mobile("","data/obj/mobile/mobile.dat",0,0,23,23,0,VSCR,23,MOBILE[0]);
+  MOBILE[24]=new mobile("","data/obj/mobile/mobile.dat",0,0,24,24,0,VSCR,24,MOBILE[0]);
+  MOBILE[25]=new mobile("","data/obj/mobile/mobile.dat",0,0,22,22,0,VSCR,25,MOBILE[0]);
+  MOBILE[26]=new mobile("","data/obj/mobile/mobile.dat",0,0,22,22,0,VSCR,26,MOBILE[0]);
+  MOBILE[27]=new mobile("","data/obj/mobile/mobile.dat",0,0,25,25,0,VSCR,27,MOBILE[0]);
+  MOBILE[28]=new mobile("","data/obj/mobile/mobile.dat",0,0,25,25,0,VSCR,28,MOBILE[0]);
+  MOBILE[29]=new mobile("","data/obj/mobile/mobile.dat",0,0,26,26,0,VSCR,29,MOBILE[0]);
+  MOBILE[30]=new mobile("","data/obj/mobile/mobile.dat",0,0,27,27,0,VSCR,30,MOBILE[0]);
+  MOBILE[31]=new mobile("","data/obj/mobile/mobile.dat",0,0,28,28,0,VSCR,31,MOBILE[0]);
   for(int i=0;i<=11;i++) { MOBILE[i]->setBonusSeqP(&BONUS_SEQ); MOBILE[i]->setDifficultyP(&DIFFICULTY); MOBILE[i]->setCtrlXP(PL->getGlobXP()); MOBILE[i]->setCtrlYP(PL->getGlobYP()); }
   // Bonus for magic box and bonus vase
-  BONUSB[0]=new bonus("data/obj/player/bonus.bmp",0,0,&VSCR);
-  for(int i=1;i<N_BBOX;i++)   BONUSB[i]=new bonus("",0,0,&VSCR,0,i,BONUSB[0]);
-  for(int i=0;i<N_BVASE;i++)  BVASE[i] =new bonus("",0,0,&VSCR,0,1,BONUSB[0]); // Bonus vase
+  BONUSB[0]=new bonus("data/obj/player/bonus.bmp",0,0,VSCR);
+  for(int i=1;i<N_BBOX;i++)   BONUSB[i]=new bonus("",0,0,VSCR,0,i,BONUSB[0]);
+  for(int i=0;i<N_BVASE;i++)  BVASE[i] =new bonus("",0,0,VSCR,0,1,BONUSB[0]); // Bonus vase
   for(int i=0;i<N_BVASE;i+=2) BVASE[i]->setInvaseP(BVASE[i+1]); // Pointer to bonus inside the vase
-  KEY   = new bonus("",0,0,&VSCR,0,1,BONUSB[0]); // Key (next level)
-  SHILD = new bonus("",0,0,&VSCR,0,1,BONUSB[0]); // Shild (when armour hitted shild is missed)
+  KEY   = new bonus("",0,0,VSCR,0,1,BONUSB[0]); // Key (next level)
+  SHILD = new bonus("",0,0,VSCR,0,1,BONUSB[0]); // Shild (when armour hitted shild is missed)
   // Particle
-  PA_SFX[0]=new particle("data/sfx/particle.bmp",0,0,&VSCR);
-  for(int i=1;i<N_PARFX;i++) PA_SFX[i]=new particle("",0,0,&VSCR,i,PA_SFX[0]);
+  PA_SFX[0]=new particle("data/sfx/particle.bmp",0,0,VSCR);
+  for(int i=1;i<N_PARFX;i++) PA_SFX[i]=new particle("",0,0,VSCR,i,PA_SFX[0]);
 
   // LOADING GRAPHIC ...
   textprintf_ex(screen,font,1,12*3,txtcol,-1,"Loading Graphic ..."); drawBar(40,txtcol,SCREENX);
@@ -1446,7 +1440,7 @@ void initObjects()
       sprintf(lev,"data/maps/l%d",i+1);
       sprintf(s1,"%s/map0.bmp",lev);
       sprintf(s2,"%s/0.map",lev);
-      MAP0[i]=new map(s1,s2,&VSCR);
+      MAP0[i]=new map(s1,s2,VSCR);
       MAP0[i]->setCtrlXP(PL->getScrollXP()); MAP0[i]->setCtrlYP(PL->getScrollYP());
       MAP0[i]->setSpeedX(1); MAP0[i]->setSpeedY(1);
       sprintf(s1,"%s/map1.bmp",lev);
@@ -1456,13 +1450,13 @@ void initObjects()
       sprintf(s5,"%s/stair.map",lev);
       sprintf(s6,"%s/wall.map",lev);
       sprintf(s7,"%s/wall.dat",lev);
-      MAP1[i]=new map(s1,s2,&VSCR,false,s3,s4,s5,s6,s7,true);
+      MAP1[i]=new map(s1,s2,VSCR,false,s3,s4,s5,s6,s7,true);
       MAP1[i]->setCtrlXP(PL->getScrollXP()); MAP1[i]->setCtrlYP(PL->getScrollYP());
       MAP1[i]->setSpeedX(2); MAP1[i]->setSpeedY(2);
       MAP1[i]->setMobileP(MOBILE,N_PLAT);
       sprintf(s1,"%s/maph.bmp",lev);
       sprintf(s2,"%s/h.map",lev);
-      MAPH[i]=new map(s1,s2,&VSCR,true);
+      MAPH[i]=new map(s1,s2,VSCR,true);
       MAPH[i]->setCtrlXP(PL->getScrollXP()); MAPH[i]->setCtrlYP(PL->getScrollYP());
       MAPH[i]->setSpeedX(2); MAPH[i]->setSpeedY(2);
      }
@@ -1477,32 +1471,32 @@ void initObjects()
 
   // LOADING SPECIAL FX ...
   textprintf_ex(screen,font,1,12*4,txtcol,-1,"Loading Special FX ..."); drawBar(80,txtcol,SCREENX);
-  FL_SFX=new flash(4802+768,520,&VSCR);
+  FL_SFX=new flash(4802+768,520,VSCR);
   FL_SFX->loadSample("data/sound/fx/thunder.wav",0);
   FL_SFX->setCtrlXP(PL->getGlobXP()); FL_SFX->setCtrlYP(PL->getGlobYP()); 
-  FO_SFX=new fog(2300,448,&VSCR);
+  FO_SFX=new fog(2300,448,VSCR);
   FO_SFX->setCtrlXP(PL->getGlobXP()); FO_SFX->setCtrlYP(PL->getGlobYP()); 
-  FI_SFX=new fire(2300,448,&VSCR);
+  FI_SFX=new fire(2300,448,VSCR);
   FI_SFX->setCtrlXP(PL->getGlobXP()); FI_SFX->setCtrlYP(PL->getGlobYP()); 
-  WA_SFX[0]=new water(2300,448,&VSCR);
+  WA_SFX[0]=new water(2300,448,VSCR);
   WA_SFX[0]->setCtrlXP(PL->getGlobXP()); WA_SFX[0]->setCtrlYP(PL->getGlobYP()); 
-  WA_SFX[1]=new water(2300,448,&VSCR);
+  WA_SFX[1]=new water(2300,448,VSCR);
   WA_SFX[1]->setCtrlXP(PL->getGlobXP()); WA_SFX[1]->setCtrlYP(PL->getGlobYP()); 
-  RA_SFX[0]=new rain(2300,400,&VSCR);
+  RA_SFX[0]=new rain(2300,400,VSCR);
   RA_SFX[0]->setCtrlXP(PL->getGlobXP()); RA_SFX[0]->setCtrlYP(PL->getGlobYP()); 
-  RA_SFX[1]=new rain(2300,80,&VSCR);
+  RA_SFX[1]=new rain(2300,80,VSCR);
   RA_SFX[1]->setCtrlXP(PL->getGlobXP()); RA_SFX[1]->setCtrlYP(PL->getGlobYP()); 
-  SN_SFX[0]=new snow(2300,500,&VSCR);
+  SN_SFX[0]=new snow(2300,500,VSCR);
   SN_SFX[0]->setCtrlXP(PL->getGlobXP()); SN_SFX[0]->setCtrlYP(PL->getGlobYP()); 
-  SN_SFX[1]=new snow(2300,200,&VSCR);
+  SN_SFX[1]=new snow(2300,200,VSCR);
   SN_SFX[1]->setCtrlXP(PL->getGlobXP()); SN_SFX[1]->setCtrlYP(PL->getGlobYP()); 
-  TH_SFX[0]=new thunder(2300,448,&VSCR);
+  TH_SFX[0]=new thunder(2300,448,VSCR);
   TH_SFX[0]->setCtrlXP(PL->getGlobXP()); TH_SFX[0]->setCtrlYP(PL->getGlobYP()); 
-  TH_SFX[1]=new thunder(2300,448,&VSCR);
+  TH_SFX[1]=new thunder(2300,448,VSCR);
   TH_SFX[1]->setCtrlXP(PL->getGlobXP()); TH_SFX[1]->setCtrlYP(PL->getGlobYP()); 
-  TH_SFX[2]=new thunder(2300,448,&VSCR);
+  TH_SFX[2]=new thunder(2300,448,VSCR);
   TH_SFX[2]->setCtrlXP(PL->getGlobXP()); TH_SFX[2]->setCtrlYP(PL->getGlobYP());
-  TH_SFX[3]=new thunder(2300,448,&VSCR);
+  TH_SFX[3]=new thunder(2300,448,VSCR);
   TH_SFX[3]->setCtrlXP(PL->getGlobXP()); TH_SFX[3]->setCtrlYP(PL->getGlobYP());
 
   // LOADING SOUNDS ...
@@ -1646,6 +1640,7 @@ void initObjects()
   drawBar(100,txtcol,SCREENX);
   destroy_bitmap(back);
  }
+
 void readConf(int *screenres, int *scanlines, bool *fscreen, bool *stretch,bool *debug,int *keyleft,int *keyright,int *keyup,int *keydown,int *keyjump,int *keyshoot,int *music_volume,int *sound_volume)
  {
   FILE *fd;
@@ -2067,7 +2062,7 @@ void Intro()
    {
   	fade32(tit);
   	stretch_blit(tit,screen,0,0,640,480,0,0,SCREENX,SCREENY);
-  	//vsync();
+  	vsync();
    }
   clear_to_color(screen,makecol(0,0,0));
   destroy_bitmap(tit); destroy_midi(intro_music);
@@ -3298,20 +3293,15 @@ void rePaint(int max_fps)
  	    }
  	 }*/
 
- 	//if(STRETCH) stretch_blit(VSCR,screen,0,0,G_RESX,G_RESY,0,0,SCREENX,SCREENY);
- 	//else blit(VSCR,screen,0,0,(SCREENX-G_RESX)/2,(SCREENY-G_RESY)/2,G_RESX,G_RESY);
-        show_video_bitmap(VSCR);
-        if(VSCR==PAGES[0])
-            VSCR=PAGES[1];
-        else
-            VSCR=PAGES[0];
- 	//if(VSYNC) vsync();
+ 	if(STRETCH) stretch_blit(VSCR,screen,0,0,G_RESX,G_RESY,0,0,SCREENX,SCREENY);
+ 	else blit(VSCR,screen,0,0,(SCREENX-G_RESX)/2,(SCREENY-G_RESY)/2,G_RESX,G_RESY);
+ 	if(VSYNC) vsync();
  	if(AR_Clock()>=MS+MSEC_TO_TIMER(1)) { MS=AR_Clock(); fps=FPS; FPS=0; } FPS++;
  	diff=(MSEC_TO_TIMER(1)/max_fps)-(AR_Clock()-OMS); if(diff>0) wait(diff);
  	OMS=AR_Clock();
  }
 
-void debug(BITMAP **bmp, int alpha)
+void debug(BITMAP *bmp, int alpha)
  {
   if(key[KEY_F1])   { L_0=!L_0;     key[KEY_F1]=0; }
   if(key[KEY_F2])   { L_1=!L_1;     key[KEY_F2]=0; }
@@ -3335,14 +3325,14 @@ void debug(BITMAP **bmp, int alpha)
   if(key[KEY_G]) PL->takeBonus(7);
   if(DBUG)
    {
-    textprintf_ex(*bmp,font,0,216,makecol32(255,0,0),-1,"V.%s",VER);
-    textprintf_ex(*bmp,font,0,0, makecol32(255,0,0),-1,"          | FPS: %d | Bonus seq.: %d | P. Layer %d",fps,BONUS_SEQ,PL->getActPlatLayer());
-    textprintf_ex(*bmp,font,0,12,makecol32(255,0,0),-1,"(Pl) PosX:%d PosY:%d GlobX:%d GlobY:%d",PL->getPosX(),PL->getPosY(),PL->getGlobX(),PL->getGlobY());
- 	textprintf_ex(*bmp,font,0,24,makecol32(255,0,0),-1,"(Pl) ActTileX:%d (OS:%d) ActTileY:%d (OS:%d)",PL->getGlobX()/MAP1[STAGE]->getTileW(),PL->getGlobX()%MAP1[STAGE]->getTileW(),PL->getGlobY()/MAP1[STAGE]->getTileH(),PL->getGlobY()%MAP1[STAGE]->getTileH());
- 	textprintf_ex(*bmp,font,0,36,makecol32(255,0,0),-1,"(M1) ActTileY:%d (Offset:%d)",MAP1[STAGE]->getActTileY(),MAP1[STAGE]->getTileOffsetY());
- 	textprintf_ex(*bmp,font,0,48,makecol32(255,0,0),-1,"(M1) ScrollX:%d  ScrollY:%d | CP: %d | RT: %d",MAP1[STAGE]->getScrollX(),MAP1[STAGE]->getScrollY(),CKPOINT,RETIME);
- 	textprintf_ex(*bmp,font,0,60,makecol32(255,0,0),-1,"Vase:");
- 	for(int i=0;i<N_BVASE;i+=2) textprintf_ex(*bmp,font,0+48+i*32,60,makecol32(255,0,0),-1,"%d.[%d %d]",i/2,BVASE[i]->isActive(),BVASE[i+1]->isActive());
+    textprintf_ex(bmp,font,0,216,makecol32(255,0,0),-1,"V.%s",VER);
+    textprintf_ex(bmp,font,0,0, makecol32(255,0,0),-1,"          | FPS: %d | Bonus seq.: %d | P. Layer %d",fps,BONUS_SEQ,PL->getActPlatLayer());
+    textprintf_ex(bmp,font,0,12,makecol32(255,0,0),-1,"(Pl) PosX:%d PosY:%d GlobX:%d GlobY:%d",PL->getPosX(),PL->getPosY(),PL->getGlobX(),PL->getGlobY());
+ 	textprintf_ex(bmp,font,0,24,makecol32(255,0,0),-1,"(Pl) ActTileX:%d (OS:%d) ActTileY:%d (OS:%d)",PL->getGlobX()/MAP1[STAGE]->getTileW(),PL->getGlobX()%MAP1[STAGE]->getTileW(),PL->getGlobY()/MAP1[STAGE]->getTileH(),PL->getGlobY()%MAP1[STAGE]->getTileH());
+ 	textprintf_ex(bmp,font,0,36,makecol32(255,0,0),-1,"(M1) ActTileY:%d (Offset:%d)",MAP1[STAGE]->getActTileY(),MAP1[STAGE]->getTileOffsetY());
+ 	textprintf_ex(bmp,font,0,48,makecol32(255,0,0),-1,"(M1) ScrollX:%d  ScrollY:%d | CP: %d | RT: %d",MAP1[STAGE]->getScrollX(),MAP1[STAGE]->getScrollY(),CKPOINT,RETIME);
+ 	textprintf_ex(bmp,font,0,60,makecol32(255,0,0),-1,"Vase:");
+ 	for(int i=0;i<N_BVASE;i+=2) textprintf_ex(bmp,font,0+48+i*32,60,makecol32(255,0,0),-1,"%d.[%d %d]",i/2,BVASE[i]->isActive(),BVASE[i+1]->isActive());
  	PL->debug();
  	for(int i=0;i<N_PLAT;i++) MOBILE[i]->debug();
  	MAP1[STAGE]->debug();

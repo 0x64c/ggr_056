@@ -17,7 +17,7 @@ class skeleton : public _sprite
    map *back_map;
 
   public:
-   skeleton(char *,int,int,BITMAP **,int i=0,skeleton *p=NULL);
+   skeleton(char *,int,int,BITMAP *,int i=0,skeleton *p=NULL);
    ~skeleton();
    void drawSprite(int,int);
    void timeSprite();
@@ -44,7 +44,7 @@ class skeleton : public _sprite
    void debug();
  };
 
-skeleton::skeleton(char *filename, int sx, int sy, BITMAP **bmp, int i, skeleton *p) : _sprite(filename,bmp,sx,sy,i,p)
+skeleton::skeleton(char *filename, int sx, int sy, BITMAP *bmp, int i, skeleton *p) : _sprite(filename,bmp,sx,sy,i,p)
  {
   resetObj(true);
   ti[0]=new timer(3); // Move time
@@ -182,11 +182,11 @@ void skeleton::drawSprite(int sx,int sy)
   if(act_frame>3 && act_frame<10) hittable=true; else hittable=false;
  	if(inScreen())
  	 {
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame],X,Y);
-    else     draw_sprite       (*screen,frames[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame],X,Y);
+    else     draw_sprite       (screen,frames[act_frame],X,Y);
     // Extra animation
-    if(side) draw_sprite_h_flip(*screen,frames[act_frame+columns],X+15,Y+8);
-    else     draw_sprite       (*screen,frames[act_frame+columns],X-15,Y+8);
+    if(side) draw_sprite_h_flip(screen,frames[act_frame+columns],X+15,Y+8);
+    else     draw_sprite       (screen,frames[act_frame+columns],X-15,Y+8);
    }
  }
 
@@ -266,13 +266,13 @@ void skeleton::resetObj(bool enb)
 
 void skeleton::debug()
  {
-  putpixel(*screen,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(screen,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(screen,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(screen,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }

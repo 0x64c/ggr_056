@@ -9,15 +9,15 @@ class osd
  	 bool powerup,*magicpw;
  	 timer *ti[5];
  	 BITMAP *frame[_COL*_ROW];
- 	 BITMAP **out;
+ 	 BITMAP *out;
 
  	 void loadSpriteFrames(char *);
  	 void assignSpriteFrame(osd *);
- 	 void setOutBitmap(BITMAP **);
+ 	 void setOutBitmap(BITMAP *);
  	 void energyBar();
  	
  	public:
- 	 osd(char *,int,int,BITMAP **,int i=0,osd *p=NULL);
+ 	 osd(char *,int,int,BITMAP *,int i=0,osd *p=NULL);
  	 ~osd();
  	 void drawOSD(int,int);
  	 void timeOSD();
@@ -32,7 +32,7 @@ class osd
  	 void debug();
  };
 
-osd::osd(char *filename, int start_x, int start_y, BITMAP **out, int i, osd *p)
+osd::osd(char *filename, int start_x, int start_y, BITMAP *out, int i, osd *p)
  {
   _i=i;
   alpha=0;
@@ -83,7 +83,7 @@ void osd::assignSpriteFrame(osd *p)
  	 }
  }
 
-void osd::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void osd::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void osd::timeOSD()
  {
@@ -121,26 +121,26 @@ void osd::drawOSD(int sx,int sy)
   //pivot_sprite(rend,car,rend_x,rend_y,piv_cx,piv_cy,itofix(ang1));
   timeOSD();
   X=(!STRETCH && SCREENX < G_RESX ? (G_RESX-SCREENX) / 2 : 0); Y=0; alpha=180;
-  drawing_mode(DRAW_MODE_TRANS,*out,0,0);
+  drawing_mode(DRAW_MODE_TRANS,out,0,0);
   set_trans_blender(0,0,0,alpha);
  	 	
-  draw_trans_sprite(*out,frame[4],X+7,Y+28); draw_trans_sprite(*out,frame[5],X+7+32,Y+28); // Time hud
-  textprintf_ex(*out,font,X+16,Y+24,makecol32(255,0,0),-1,"Time"); // "Time"
+  draw_trans_sprite(out,frame[4],X+7,Y+28); draw_trans_sprite(out,frame[5],X+7+32,Y+28); // Time hud
+  textprintf_ex(out,font,X+16,Y+24,makecol32(255,0,0),-1,"Time"); // "Time"
   // Time
-  if(*sec<10) textprintf_ex(*out,font,X+16,Y+35,makecol32(200,200,200),-1,"%d:0%d",*min,*sec);
-  else        textprintf_ex(*out,font,X+16,Y+35,makecol32(200,200,200),-1,"%d:%d",*min,*sec);
-  draw_trans_sprite(*out,frame[3],X+170,Y+194); // Weapon hud
-  if(powerup) draw_trans_sprite(*out,frame[weapon_frame+33],X+178,Y+201);  // Weapon (with powerup)
-  else        draw_trans_sprite(*out,frame[weapon_frame],X+178,Y+201);     // Weapon 
-  textprintf_ex(*out,font,X+8,Y,makecol32(255,0,0),-1,"Player 1"); // Player 1
-  textprintf_ex(*out,font,X+16,Y+12,makecol32(200,200,200),-1,"%d",*score); // Score
-  for(int i=0;i<*lives-1;i++) draw_trans_sprite(*out,frame[1],X+363-i*18,Y+210); // Lives
-  draw_trans_sprite(*out,frame[66],X+207,Y+190); // Shild
-  draw_trans_sprite(*out,frame[67],X+205,Y+210); // Power
+  if(*sec<10) textprintf_ex(out,font,X+16,Y+35,makecol32(200,200,200),-1,"%d:0%d",*min,*sec);
+  else        textprintf_ex(out,font,X+16,Y+35,makecol32(200,200,200),-1,"%d:%d",*min,*sec);
+  draw_trans_sprite(out,frame[3],X+170,Y+194); // Weapon hud
+  if(powerup) draw_trans_sprite(out,frame[weapon_frame+33],X+178,Y+201);  // Weapon (with powerup)
+  else        draw_trans_sprite(out,frame[weapon_frame],X+178,Y+201);     // Weapon 
+  textprintf_ex(out,font,X+8,Y,makecol32(255,0,0),-1,"Player 1"); // Player 1
+  textprintf_ex(out,font,X+16,Y+12,makecol32(200,200,200),-1,"%d",*score); // Score
+  for(int i=0;i<*lives-1;i++) draw_trans_sprite(out,frame[1],X+363-i*18,Y+210); // Lives
+  draw_trans_sprite(out,frame[66],X+207,Y+190); // Shild
+  draw_trans_sprite(out,frame[67],X+205,Y+210); // Power
   energyBar(); // Energybar
    
   set_trans_blender(0,0,0,255);
-  drawing_mode(DRAW_MODE_SOLID,*out,0,0);
+  drawing_mode(DRAW_MODE_SOLID,out,0,0);
  }
 
 bool osd::inScreen()
@@ -164,21 +164,21 @@ void osd::energyBar()
  {
   if(*magicpw)
    {
-    for(int i=23;i<=27;i++) draw_trans_sprite(*out,frame[i],X+15+(i-23)*32,Y+204);
-   	if(*gauge>0)  draw_trans_sprite(*out,frame[54],X+15,Y+204);
-   	if(*gauge>10) draw_trans_sprite(*out,frame[55],X+15+32,Y+204);
-   	if(*gauge>20) draw_trans_sprite(*out,frame[56],X+15+32,Y+204);
-   	if(*gauge>30) draw_trans_sprite(*out,frame[57],X+15+32,Y+204);
-   	if(*gauge>40) { draw_trans_sprite(*out,frame[58],X+15+32,Y+204); draw_trans_sprite(*out,frame[59],X+15+64,Y+204); }
-   	if(*gauge>49) draw_trans_sprite(*out,frame[60],X+15+64,Y+204);
-   	if(*gauge>57) { draw_trans_sprite(*out,frame[61],X+15+64,Y+204); draw_trans_sprite(*out,frame[62],X+15+96,Y+204); }
-   	if(*gauge>64) draw_trans_sprite(*out,frame[29],X+15+96,Y+204);
-   	if(*gauge>69) { draw_trans_sprite(*out,frame[63],X+15+96,Y+204); draw_trans_sprite(*out,frame[31],X+15+128,Y+204); }
-   	if(*gauge>73) { draw_trans_sprite(*out,frame[64],X+15+128,Y+204); draw_trans_sprite(*out,frame[65],X+15+160,Y+204); }
+    for(int i=23;i<=27;i++) draw_trans_sprite(out,frame[i],X+15+(i-23)*32,Y+204);
+   	if(*gauge>0)  draw_trans_sprite(out,frame[54],X+15,Y+204);
+   	if(*gauge>10) draw_trans_sprite(out,frame[55],X+15+32,Y+204);
+   	if(*gauge>20) draw_trans_sprite(out,frame[56],X+15+32,Y+204);
+   	if(*gauge>30) draw_trans_sprite(out,frame[57],X+15+32,Y+204);
+   	if(*gauge>40) { draw_trans_sprite(out,frame[58],X+15+32,Y+204); draw_trans_sprite(out,frame[59],X+15+64,Y+204); }
+   	if(*gauge>49) draw_trans_sprite(out,frame[60],X+15+64,Y+204);
+   	if(*gauge>57) { draw_trans_sprite(out,frame[61],X+15+64,Y+204); draw_trans_sprite(out,frame[62],X+15+96,Y+204); }
+   	if(*gauge>64) draw_trans_sprite(out,frame[29],X+15+96,Y+204);
+   	if(*gauge>69) { draw_trans_sprite(out,frame[63],X+15+96,Y+204); draw_trans_sprite(out,frame[31],X+15+128,Y+204); }
+   	if(*gauge>73) { draw_trans_sprite(out,frame[64],X+15+128,Y+204); draw_trans_sprite(out,frame[65],X+15+160,Y+204); }
    	if(*gauge==76)
    	 {
-   	  if(ti[0]->isOn()) draw_trans_sprite(*out,frame[33+2],X+176,Y+201); else draw_trans_sprite(*out,frame[2],X+176,Y+201);
-   	  draw_trans_sprite(*out,frame[weapon_frame+66],X+178,Y+201);
+   	  if(ti[0]->isOn()) draw_trans_sprite(out,frame[33+2],X+176,Y+201); else draw_trans_sprite(out,frame[2],X+176,Y+201);
+   	  draw_trans_sprite(out,frame[weapon_frame+66],X+178,Y+201);
    	 }
    }
  }

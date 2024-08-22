@@ -66,7 +66,7 @@ int main()
   	  Player();
   	  Enemies();
   	  Collision();
-  	  if(DEBUG) debug(&VSCR,50); // Debug
+  	  if(DEBUG) debug(VSCR,50); // Debug
   	  Scroll();
   	  checkTimer();
   	  // Print all to screen

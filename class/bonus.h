@@ -13,7 +13,7 @@ class bonus
  	 SAMPLE *sound[4];
  	 BITMAP *frame[_COL*_ROW];
  	 BITMAP *frame_col[_COL*_ROW];
- 	 BITMAP **out;
+ 	 BITMAP *out;
  	 map *plat_map;
  	 map *hight_map;
  	 map *back_map;
@@ -21,10 +21,10 @@ class bonus
  	 
  	 void loadSpriteFrames(char *);
  	 void assignSpriteFrame(bonus *);
- 	 void setOutBitmap(BITMAP **);
+ 	 void setOutBitmap(BITMAP *);
  	
  	public:
- 	 bonus(char *,int,int,BITMAP **,int fr=0,int i=0,bonus *p=NULL);
+ 	 bonus(char *,int,int,BITMAP *,int fr=0,int i=0,bonus *p=NULL);
  	 ~bonus();
  	 void drawSprite(int,int);
  	 void timeSprite();
@@ -60,7 +60,7 @@ class bonus
  	 void debug();
  };
 
-bonus::bonus(char *filename, int sx, int sy, BITMAP **out, int fr, int i, bonus *p)
+bonus::bonus(char *filename, int sx, int sy, BITMAP *out, int fr, int i, bonus *p)
  {
   _i=i;
   if(!_i) loadSpriteFrames(filename); else assignSpriteFrame(p);
@@ -129,7 +129,7 @@ void bonus::assignSample(int n,bonus *p)
   sound[n]=p->sound[n];
  }
 
-void bonus::setOutBitmap(BITMAP **bmp) { out=bmp; }
+void bonus::setOutBitmap(BITMAP *bmp) { out=bmp; }
 
 void bonus::timeSprite()
  {
@@ -176,8 +176,8 @@ void bonus::drawSprite(int sx,int sy)
   if(inScreen())
    {
   	if(type!=11) if(ti[0]->isOn()) { act_frame++; if(act_frame>max_frame) act_frame=min_frame; }
-    if(side) draw_sprite_h_flip(*out,frame[act_frame],X,Y);
-    else     draw_sprite       (*out,frame[act_frame],X,Y);
+    if(side) draw_sprite_h_flip(out,frame[act_frame],X,Y);
+    else     draw_sprite       (out,frame[act_frame],X,Y);
    }
  }
 
@@ -276,13 +276,13 @@ void bonus::resetObj(bool act,int typ)
 
 void bonus::debug()
  {
-  putpixel(*out,pos_x,pos_y-30+58,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+59,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x,pos_y-30+62,makecol32(255,0,0));
-  putpixel(*out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
-  putpixel(*out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
-  putpixel(*out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+58,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+59,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x,pos_y-30+62,makecol32(255,0,0));
+  putpixel(out,pos_x-2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x+2,pos_y-30+60,makecol32(255,0,0));
+  putpixel(out,pos_x-1,pos_y-30+61,makecol32(255,0,0));
+  putpixel(out,pos_x+1,pos_y-30+61,makecol32(255,0,0));
  }
