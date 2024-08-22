@@ -35,6 +35,9 @@
 #define N_BVASE 8
 
 #ifdef linux
+#include <sys/stat.h>
+//debug
+#include <signal.h>
 #undef CFGFILE
 char CFGFILE[256] = "./config.cfg";
 #endif

@@ -222,7 +222,7 @@ void map::drawMap()
  	   //blit(getTile(y+tilepos_y,x),*out,0,0,x*tdim_x,(max_ty-1-y)*tdim_y+scroll_dy,scr_x,scr_y);
  	   //draw_sprite(*out,tile[data[x+tilepos_x][num_row-1-y]],x*tile_w-scroll_dx,(num_row-1-y)*tile_h);
        if((x+tilepos_x)<tilemax_x&&(y+tilepos_y)<tilemax_y)//check if array in bounds before accessing
- 	     draw_sprite(*out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
+ 	     draw_sprite(out,tile[data[x+tilepos_x][y+tilepos_y]],x*tile_w-scroll_dx,y*tile_h-scroll_dy);
  	   
  	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x][y]);
  	   //textprintf_ex(*out,font,0+x*25,0+y*25,makecol32(255,0,0),-1,"%d",data[x+tilepos_x][num_row-1-y]);
