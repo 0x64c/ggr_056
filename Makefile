@@ -3,6 +3,8 @@ PATH=$(TOOLCHAIN_PATH)/usr/bin:$PATH
 TOOLCHAIN=$(TOOLCHAIN_PATH)/usr/bin/mipsel-linux-
 TARGET=mipsel-gcw0-linux-uclibc
 
+ALLEGRO_LIB=$(TOOLCHAIN_PATH)/$(TARGET)/sysroot/usr/lib/liballeg.so.4.4
+
 EXE=ggr
 RM=/usr/bin/rm -rf
 MKDIR=/usr/bin/mkdir -p
@@ -41,7 +43,7 @@ $(EXE) : $(OBJS)
 	$(STRIP) $(OPK_DIR)/$(EXE)
 
 opk : $(EXE)
-	mksquashfs ./opk_build/* ./data $(EXE).opk -all-root -noappend -no-exports -no-xattrs
+	mksquashfs ./opk_build/* ./data $(ALLEGRO_LIB) $(EXE).opk -all-root -noappend -no-exports -no-xattrs
 
 upload : opk
 	/usr/bin/scp -v ./$(OPK) $(REMOTE_USER)@$(REMOTE_IP):$(REMOTE_PATH)/$(OPK)
